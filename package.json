@@ -1,0 +1,25 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "추천시스템 AI Hub 양재 인공지능 웹 개발 백엔드",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jisulee42@github.com/AIHub-Cinemaster/movie-recommendation-web-back.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AIHub-Cinemaster/movie-recommendation-web-back/issues"
+  },
+  "homepage": "https://github.com/AIHub-Cinemaster/movie-recommendation-web-back#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "nanoid": "^4.0.0"
+  }
+}
