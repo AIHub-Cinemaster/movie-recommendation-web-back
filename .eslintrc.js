@@ -6,6 +6,9 @@ module.exports = {
   // eslint의 룰을 기본 권장설정으로 설정
   extends: ["eslint:recommended", "plugin:prettier/recommended"],
 
+  // ESLint가 ES6 ~ ES7을 파싱할 때 생기는 문제 -> "babel-eslint" 패키지 설치로 해결
+  parser: "babel-eslint",
+
   // 코드를 해석하는 parser에 대한 설정
   parserOptions: {
     // 자바스크립트 버전, 7은 ECMA2016
