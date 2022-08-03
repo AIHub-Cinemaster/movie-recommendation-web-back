@@ -6,19 +6,10 @@ module.exports = new Schema(
     shortId,
     email: {
       type: String,
-      reauired: true,
+      required: true,
     },
-    password: {
-      type: String,
-      reauired: true,
-    },
-    name: {
-      type: String,
-      reauired: true,
-    },
-    cartId: {
-      type: Schema.Types.ObjectId,
-      ref: "MovieCart",
+    movieList: {
+      type: [String],
       required: true,
     },
   },

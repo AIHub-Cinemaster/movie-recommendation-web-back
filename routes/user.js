@@ -3,6 +3,7 @@ const router = Router();
 const asyncHandler = require("./../utils/async-handler");
 const crypto = require("crypto");
 const { User } = require("../models");
+const { MovieCart } = require("../models");
 const jwt = require("jsonwebtoken");
 const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
@@ -25,10 +26,19 @@ router.post(
       return;
     }
 
+    // 회원 가입할 때 영화 찜목록 생성
+    await MovieCart.create({
+      email,
+      movieList: [],
+    });
+
+    const cartData = await MovieCart.findOne({ email });
+
     await User.create({
       email,
       password: hashPassword,
       name,
+      cartId: cartData,
     });
 
     res.json({
