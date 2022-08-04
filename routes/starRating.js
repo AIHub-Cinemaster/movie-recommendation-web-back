@@ -5,7 +5,7 @@ const asyncHandler = require("./../utils/async-handler");
 
 const router = Router();
 
-// 별점 가져오기
+// 별점 가져오기 2
 router.get(
   "/:movieId",
   asyncHandler(async (req, res, next) => {
