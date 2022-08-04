@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/user");
 const movieCartRouter = require("./routes/movieCart");
+const starRatingRouter = require("./routes/starRating");
+
 const authMiddleware = require("./utils/authMiddleware");
 
 const cors = require("cors");
@@ -29,6 +31,7 @@ app.use("/user", userRouter);
 //app.use("/cart", authMiddleware, movieCartRouter);
 app.use("/cart", movieCartRouter);
 
+app.use("/star", starRatingRouter);
 app.listen(8090, () => {
   console.log("server open");
 });

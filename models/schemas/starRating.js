@@ -8,7 +8,7 @@ module.exports = new Schema(
       type: String,
       required: true,
     },
-    star: [
+    starList: [
       {
         movieId: String,
         star: Number,

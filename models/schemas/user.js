@@ -21,6 +21,11 @@ module.exports = new Schema(
       ref: "MovieCart",
       required: true,
     },
+    starId: {
+      type: Schema.Types.ObjectId,
+      ref: "StarRating",
+      required: true,
+    },
   },
   {
     timestamps: true,

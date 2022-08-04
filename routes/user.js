@@ -4,6 +4,7 @@ const asyncHandler = require("./../utils/async-handler");
 const crypto = require("crypto");
 const { User } = require("../models");
 const { MovieCart } = require("../models");
+const { StarRating } = require("../models");
 const jwt = require("jsonwebtoken");
 const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
@@ -34,11 +35,20 @@ router.post(
 
     const cartData = await MovieCart.findOne({ email });
 
+    // 회원 가입할 때 별점 생성
+    await StarRating.create({
+      email,
+      star: [],
+    });
+
+    const starData = await StarRating.findOne({ email });
+
     await User.create({
       email,
       password: hashPassword,
       name,
       cartId: cartData,
+      starId: starData,
     });
 
     res.json({

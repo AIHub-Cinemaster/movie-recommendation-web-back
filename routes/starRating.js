@@ -7,80 +7,102 @@ const router = Router();
 
 // 별점 가져오기
 router.get(
-  "/:movieApiId",
+  "/:movieId",
   asyncHandler(async (req, res, next) => {
     const { email } = req.body;
-    const movieData = await MovieCart.findOne({ email });
+    const { movieId } = req.params;
 
-    if (email && movieData.movieList) {
-      res.json(movieData.movieList);
+    const starData = await StarRating.findOne({ email });
+    const result = starData.starList.find((element) => {
+      if (element.movieId === movieId) {
+        return true;
+      }
+    });
+
+    // 별점 등록한 적 없을 때 처리
+    if (result) {
+      res.json(result);
     } else {
-      res.status(500);
       res.json({
-        fail: "찜 목록 조회에 실패했습니다.",
+        movieId: movieId,
+        star: 0,
       });
     }
   }),
 );
 
-// 영화 찜 등록
+// 별점 등록
 router.post(
-  "/add",
+  "/:movieId",
   asyncHandler(async (req, res, next) => {
-    const { email, movieId } = req.body;
+    const { email, star } = req.body;
+    const { movieId } = req.params;
 
-    // User 컬렉션에서 emailId를 찾은 후
-    // populate를 이용해서 cart 컬렉션으로 참조
-    // cart 컬렉션에 movieList를 가져와서
-    // 기존 리스트에서 새로들어온 movieId 추가
-    const authData = await User.findOne({ email }).populate("cartId");
-    const cartMovieList = authData.cartId.movieList;
+    const userStarData = await User.findOne({ email }).populate("starId");
 
-    const newCartMovieList = [...cartMovieList, movieId];
-    console.log(newCartMovieList);
+    const starRatingList = userStarData.starId.starList;
+    const newStarRatingList = [
+      ...starRatingList,
+      {
+        movieId: movieId,
+        star,
+      },
+    ];
+    console.log(newStarRatingList);
 
-    await MovieCart.updateOne(
+    await StarRating.updateOne(
       { email },
       {
-        movieList: newCartMovieList,
+        starList: newStarRatingList,
       },
     );
 
     res.json({
-      result: "찜 목록에 추가 되었습니다.",
+      result: " 별점 목록에 추가 되었습니다.",
     });
   }),
 );
 
-// 영화 찜 삭제
-router.get(
-  "/delete",
+// 별점 수정
+router.post(
+  "/:movieId/update",
   asyncHandler(async (req, res, next) => {
-    const { email, movieId } = req.body;
-    const movieData = await MovieCart.findOne({ email });
-    // await MovieCart.deleteOne({ email });
-    const movieList = movieData.movieList;
-    const idx = movieList.indexOf(movieId);
+    const { email, star } = req.body;
+    const { movieId } = req.params;
 
-    // 유효성 검사
-    // 요청한 movieId 가 DB에 있는 MovieList에 포함 되어 있지 않은 경우
-    if (idx < 0) {
+    const starData = await StarRating.findOne({ email });
+    if (!starData) {
       res.status(401);
       res.json({
-        fail: "찜 목록에 해당 영화가 없습니다.",
+        fail: "존재하지 않는 이메일입니다.",
       });
       return;
     }
+    const starRatingList = starData.starList;
+    const callFindIndex = (element) => {
+      return element.movieId == movieId;
+    };
+    const findIndex = starRatingList.findIndex(callFindIndex);
 
-    movieList.remove(movieId);
-    await MovieCart.updateOne(
+    if (findIndex === -1) {
+      res.status(500);
+      res.json({
+        fail: "해당 영화의 기등록된 별점을 찾지 못했습니다. 별점을 새로 등록해주세요.",
+      });
+      return;
+    }
+    starRatingList[findIndex].star = star;
+
+    await StarRating.updateOne(
       { email },
       {
-        movieList,
+        starList: starRatingList,
       },
     );
 
-    res.json(movieList);
+    res.json({
+      result: " 별점 목록에 추가 되었습니다.",
+    });
   }),
 );
 
