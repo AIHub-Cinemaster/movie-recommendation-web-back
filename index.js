@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./routes/user");
-const movieCartRouter = require("./routes/movieCart");
-const starRatingRouter = require("./routes/starRating");
+const cartRouter = require("./routes/cart");
+const starRouter = require("./routes/star");
 
 const authMiddleware = require("./utils/authMiddleware");
 
@@ -29,9 +29,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //user url 경로 라우팅
 app.use("/user", userRouter);
 //app.use("/cart", authMiddleware, movieCartRouter);
-app.use("/cart", movieCartRouter);
+app.use("/cart", cartRouter);
 
-app.use("/star", starRatingRouter);
+app.use("/star", starRouter);
 app.listen(8090, () => {
   console.log("server open");
 });

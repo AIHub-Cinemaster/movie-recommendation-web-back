@@ -3,8 +3,8 @@ const router = Router();
 const asyncHandler = require("./../utils/async-handler");
 const crypto = require("crypto");
 const { User } = require("../models");
-const { MovieCart } = require("../models");
-const { StarRating } = require("../models");
+const { Cart } = require("../models");
+const { Star } = require("../models");
 const jwt = require("jsonwebtoken");
 const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
@@ -27,28 +27,10 @@ router.post(
       return;
     }
 
-    // 회원 가입할 때 영화 찜목록 생성
-    await MovieCart.create({
-      email,
-      movieList: [],
-    });
-
-    const cartData = await MovieCart.findOne({ email });
-
-    // 회원 가입할 때 별점 생성
-    await StarRating.create({
-      email,
-      star: [],
-    });
-
-    const starData = await StarRating.findOne({ email });
-
     await User.create({
       email,
       password: hashPassword,
       name,
-      cartId: cartData,
-      starId: starData,
     });
 
     res.json({
@@ -65,12 +47,7 @@ router.post(
     let hashPassword = passwordHash(password);
 
     const checkEmail = await User.findOne({ email });
-    // if (checkEmail.status !== null || checkEmail.status !== undefined) {
-    //     if (checkEmail.status === true) {
-    //         console.log(`너 비밀번호 초기화했었으니깐,
-    //         비밀번호만 ㅈㅐ생성하는 페이지로 리다이렉트`);
-    //     }
-    // }
+
     if (!checkEmail) {
       res.status(401);
       res.json({

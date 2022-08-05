@@ -4,14 +4,17 @@ const shortId = require("./type/short-id");
 module.exports = new Schema(
   {
     shortId,
-    email: {
-      type: String,
+    userRef: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
-    movieList: {
-      type: [String],
-      required: true,
-    },
+    starList: [
+      {
+        movieId: String,
+        star: Number,
+      },
+    ],
   },
   {
     timestamps: true,
