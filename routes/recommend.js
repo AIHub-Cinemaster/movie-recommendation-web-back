@@ -7,6 +7,10 @@ const { Star } = require("../models");
 const recommender = require("../services/recommend/recommender");
 let recommendList = recommender.recommendList;
 
+/*
+- 기능 구현 보류
+*/
+/*
 router.get(
   "list/:email",
   asyncHandler(async (req, res, next) => {
@@ -22,5 +26,6 @@ router.get(
     }
   }),
 );
+*/
 
 module.exports = router;
