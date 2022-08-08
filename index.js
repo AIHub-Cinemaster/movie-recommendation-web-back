@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
 const starRouter = require("./routes/star");
+const recommendRouter = require("./routes/recommend");
 
 const authMiddleware = require("./utils/authMiddleware");
 
@@ -35,3 +36,6 @@ app.use("/star", starRouter);
 app.listen(8090, () => {
   console.log("server open");
 });
+
+// recommend url 경로 라우팅
+app.use("/recommend", recommendRouter);
