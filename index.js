@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
 const starRouter = require("./routes/star");
+const reviewRouter = require("./routes/review");
 const recommendRouter = require("./routes/recommend");
 
 const authMiddleware = require("./utils/authMiddleware");
@@ -33,9 +34,13 @@ app.use("/user", userRouter);
 app.use("/cart", cartRouter);
 
 app.use("/star", starRouter);
-app.listen(8090, () => {
-  console.log("server open");
-});
+
+// review url 경로 라우팅
+app.use("/review", reviewRouter);
 
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
+
+app.listen(8090, () => {
+  console.log("server open");
+});
