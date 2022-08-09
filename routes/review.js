@@ -3,19 +3,24 @@ const { User } = require("../models");
 const { Review } = require("../models");
 const asyncHandler = require("../utils/async-handler");
 
+// UTC to KST
+const { moment } = require("../utils/moment");
+
 const router = Router();
 
 // 리뷰 목록 조회
 // TODO : 유저가 작성한 리뷰 조회
 router.get(
   "/:movieId",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { movieId } = req.params;
 
     const reviews = await Review.find({ movieId: movieId }).populate("userRef");
     if (reviews.length === 0) {
       return null;
     }
+
+    console.log(reviews);
 
     const result = await Promise.all(
       reviews.map((review) => {
@@ -25,9 +30,9 @@ router.get(
           title: review.title,
           content: review.content,
 
-          // TODO : 한국시간(UTC +9) 시간 설정
-          createdAt: review.createdAt,
-          updatedAt: review.updatedAt,
+          // TODO : 날짜 포맷 프론트랑 논의
+          createdAtKST: moment(review.createdAt).format("YYYY년 M월 D일"),
+          updatedAtKST: moment(review.updatedAt).format("YYYY년 M월 D일"),
 
           // TODO : 댓글, 좋아요 추가
         };
@@ -48,10 +53,9 @@ router.get(
 );
 
 // 리뷰 작성
-// TODO : 영화 한 편당 리뷰 한 개 제한 -> 중복 리뷰 X
 router.post(
   "/add",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { movieId, email, title, content } = req.body;
 
     const authData = await User.findOne({ email });
@@ -64,12 +68,26 @@ router.post(
       return;
     }
 
-    await Review.create({
-      userRef: authData,
-      movieId,
-      title,
-      content,
+    const reviewData = await Review.findOne({
+      $and: [{ email }, { movieId }],
     });
+
+    if (reviewData) {
+      res.status(400);
+      res.json({
+        fail: "작성한 리뷰가 이미 존재합니다.",
+      });
+    }
+
+    /*
+    * 중복 방지
+    { upsert: true } 속성을 주면 DB에 값이 없는 경우에만 생성
+    */
+    await Review.findOneAndUpdate(
+      { userRef: authData, movieId: movieId, title: title, content: content },
+      { userRef: authData, movieId: movieId, title: title, content: content },
+      { upsert: true },
+    );
 
     res.json({
       result: "리뷰가 작성되었습니다.",
@@ -80,7 +98,7 @@ router.post(
 // 리뷰 수정
 router.post(
   "/update",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { movieId, email, title, content } = req.body;
 
     const authData = await User.findOne({ email });
@@ -109,7 +127,7 @@ router.post(
 // 리뷰 삭제
 router.post(
   "/delete",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { email, movieId } = req.body;
 
     const authData = await User.findOne({ email });
@@ -122,11 +140,21 @@ router.post(
       return;
     }
 
+    const reviewData = await Review.findOne({
+      $and: [{ email }, { movieId }],
+    });
+
+    if (!reviewData) {
+      res.status(404);
+      res.json({
+        fail: "작성한 리뷰가 존재하지 않습니다.",
+      });
+    }
+
     await Review.deleteOne({
       $and: [{ email }, { movieId }],
     });
 
-    // TODO : 작성한 리뷰가 없을 때 삭제 요청 시 예외 처리
     res.json({
       result: "리뷰가 삭제되었습니다.",
     });
