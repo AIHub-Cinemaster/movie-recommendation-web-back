@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/AIHub-Cinemaster/movie-recommendation-web-back#readme",
   "dependencies": {
+    "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "express": "^4.18.1",
@@ -24,7 +25,8 @@
     "mongoose": "^6.4.5",
     "nanoid": "3.3.4",
     "nodemailer": "^6.7.7",
-    "redis": "^4.2.0"
+    "redis": "^4.2.0",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {
     "eslint": "^8.20.0",

@@ -30,7 +30,7 @@ router.get(
   }),
 );
 
-// 별점 등록
+// 별점 등록 및 수정
 router.post(
   "/add",
   asyncHandler(async (req, res, next) => {
@@ -38,7 +38,7 @@ router.post(
 
     const authData = await User.findOne({ email }); //없으면 null
     if (!authData) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
       });
@@ -119,48 +119,5 @@ router.post(
     }
   }),
 );
-
-// // 별점 수정
-// router.post(
-//   "/:movieId/update",
-//   asyncHandler(async (req, res, next) => {
-//     const { email, star } = req.body;
-//     const { movieId } = req.params;
-
-//     const starData = await StarRating.findOne({ email });
-//     if (!starData) {
-//       res.status(401);
-//       res.json({
-//         fail: "존재하지 않는 이메일입니다.",
-//       });
-//       return;
-//     }
-//     const starRatingList = starData.starList;
-//     const callFindIndex = (element) => {
-//       return element.movieId == movieId;
-//     };
-//     const findIndex = starRatingList.findIndex(callFindIndex);
-
-//     if (findIndex === -1) {
-//       res.status(500);
-//       res.json({
-//         fail: "해당 영화의 기등록된 별점을 찾지 못했습니다. 별점을 새로 등록해주세요.",
-//       });
-//       return;
-//     }
-//     starRatingList[findIndex].star = star;
-
-//     await StarRating.updateOne(
-//       { email },
-//       {
-//         starList: starRatingList,
-//       },
-//     );
-
-//     res.json({
-//       result: " 별점 목록에 추가 되었습니다.",
-//     });
-//   }),
-// );
 
 module.exports = router;

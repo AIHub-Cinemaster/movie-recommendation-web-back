@@ -13,7 +13,7 @@ router.get(
     const authData = await User.findOne({ email }); //없으면 null
 
     if (!authData) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
       });
@@ -52,7 +52,7 @@ router.post(
 
     const authData = await User.findOne({ email }); //없으면 null
     if (!authData) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
       });
@@ -104,7 +104,7 @@ router.post(
     const { email, movieId } = req.body;
     const authData = await User.findOne({ email }); //없으면 null
     if (!authData) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
       });
@@ -114,7 +114,7 @@ router.post(
     const checkCart = await Cart.findOne({ userRef: authData }); //없으면 null
 
     if (!checkCart) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "Cart DB 에 일치하는 유저 정보가 없습니다",
       });

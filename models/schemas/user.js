@@ -10,10 +10,14 @@ module.exports = new Schema(
     },
     password: {
       type: String,
-      reauired: true,
+      reauired: false,
     },
     name: {
       type: String,
+      reauired: true,
+    },
+    type: {
+      type: String, // local, kakao, naver
       reauired: true,
     },
   },
