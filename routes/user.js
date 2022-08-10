@@ -13,7 +13,6 @@ router.post(
   "/signUp",
   asyncHandler(async (req, res, next) => {
     const { email, password, name } = req.body;
-    console.log(req.body);
     let hashPassword = passwordHash(password);
 
     const checkEmail = await User.findOne({ email });
@@ -31,6 +30,7 @@ router.post(
       email,
       password: hashPassword,
       name,
+      type: "local",
     });
 
     res.json({
@@ -46,10 +46,10 @@ router.post(
 
     let hashPassword = passwordHash(password);
 
-    const checkEmail = await User.findOne({ email });
-
+    const checkEmail = await User.findOne({ email, type: "local" });
+    console.log(email, password);
     if (!checkEmail) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "존재하지 않는 이메일입니다.",
       });
@@ -57,7 +57,7 @@ router.post(
     }
 
     if (hashPassword !== checkEmail.password) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "비밀번호가 틀렸습니다.",
       });
