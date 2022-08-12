@@ -62,6 +62,7 @@ const checkUserData = async (userData, res) => {
 
     jwt.sign(
       {
+        shortId: checkEmail.shortId,
         email: checkEmail.email,
         name: checkEmail.name,
       },
@@ -81,6 +82,7 @@ const checkUserData = async (userData, res) => {
             accessToken: token,
             email: checkEmail.email,
             name: checkEmail.name,
+            shortId: checkEmail.shortId,
           });
         }
       },

@@ -8,14 +8,44 @@ const { Star } = require("../models");
 const jwt = require("jsonwebtoken");
 const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
+const multer = require("multer");
+const path = require("path");
+
+let storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "uploads/");
+  },
+  filename: function (req, file, callback) {
+    let extension = path.extname(file.originalname);
+    let basename = path.basename(file.originalname, extension);
+    callback(null, basename + "-" + Date.now() + extension);
+  },
+});
+
+// 1. 미들웨어 등록
+let upload = multer({
+  storage: storage,
+});
 
 router.post(
   "/signUp",
+  upload.single("file"),
   asyncHandler(async (req, res, next) => {
+    let Imgfile = req.file;
     const { email, password, name } = req.body;
-    let hashPassword = passwordHash(password);
 
-    const checkEmail = await User.findOne({ email });
+    let hashPassword = passwordHash(password);
+    const checkEmail = await User.findOne({ email, type: "local" });
+
+    const file = req.file;
+    let filepath = "";
+
+    if (Imgfile) {
+      // 이미지 안보내줬으면 undefined로 온다
+      filepath = file.path;
+    } else {
+      filepath = "uploads\\default_profile.png";
+    }
 
     if (checkEmail) {
       // throw new Error("이미 가입된 이메일입니다.");
@@ -31,6 +61,7 @@ router.post(
       password: hashPassword,
       name,
       type: "local",
+      profileImg: filepath,
     });
 
     res.json({
@@ -47,7 +78,6 @@ router.post(
     let hashPassword = passwordHash(password);
 
     const checkEmail = await User.findOne({ email, type: "local" });
-    console.log(email, password);
     if (!checkEmail) {
       res.status(500);
       res.json({
@@ -64,8 +94,10 @@ router.post(
       return;
     }
 
+    console.log("checkEmail", checkEmail.shortId);
     jwt.sign(
       {
+        shortId: checkEmail.shortId,
         email: email,
         name: checkEmail.name,
       },
@@ -84,6 +116,7 @@ router.post(
             accessToken: token,
             email: email,
             name: checkEmail.name,
+            shortId: checkEmail.shortId,
           });
         }
       },

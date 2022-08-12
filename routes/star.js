@@ -7,11 +7,11 @@ const router = Router();
 
 // 별점 가져오기
 router.get(
-  "/:email/:movieId",
+  "/:shortId/:movieId",
   asyncHandler(async (req, res, next) => {
-    const { email, movieId } = req.params;
+    const { shortId, movieId } = req.params;
 
-    const starData = await Star.findOne({ email });
+    const starData = await Star.findOne({ shortId });
     const result = starData.starList.find((element) => {
       if (element.movieId === movieId) {
         return true;
@@ -34,9 +34,9 @@ router.get(
 router.post(
   "/add",
   asyncHandler(async (req, res, next) => {
-    const { email, movieId, star } = req.body;
+    const { shortId, movieId, star } = req.body;
 
-    const authData = await User.findOne({ email }); //없으면 null
+    const authData = await User.findOne({ shortId }); //없으면 null
     if (!authData) {
       res.status(500);
       res.json({
@@ -44,10 +44,10 @@ router.post(
       });
       return;
     }
-
+    console.log("authData", authData);
     // Create. 별점 자체를 최초 등록
     const checkStar = await Star.findOne({ userRef: authData }); //없으면 null
-
+    console.log("checkStar", checkStar);
     if (!checkStar) {
       await Star.create({
         userRef: authData,

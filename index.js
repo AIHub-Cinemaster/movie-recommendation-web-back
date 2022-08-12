@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
 const starRouter = require("./routes/star");
-
+const fileUploadRouter = require("./routes/fileUpload");
 const kakaoRouter = require("./routes/oauth/kakao");
 const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
@@ -15,6 +15,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
+app.use("/uploads", express.static("uploads")); // 이미지 경로 접근 허용하도록
 
 //DB 연결
 mongoose.connect("mongodb://localhost:27017/Cinemaster");
@@ -47,7 +48,7 @@ app.use("/review", reviewRouter);
 
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
-
+app.use("/upload", fileUploadRouter);
 app.listen(8090, () => {
   console.log("server open");
 });
