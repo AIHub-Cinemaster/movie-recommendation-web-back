@@ -44,7 +44,7 @@ router.post(
       });
       return;
     }
-
+    
     // Create. 별점 자체를 최초 등록
     const checkStar = await Star.findOne({ userRef: authData }); //없으면 null
 
