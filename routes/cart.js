@@ -7,10 +7,10 @@ const router = Router();
 
 // 영화 찜목록 가져오기
 router.get(
-  "/list/:email",
+  "/list/:shortId",
   asyncHandler(async (req, res, next) => {
-    const { email } = req.params;
-    const authData = await User.findOne({ email }); //없으면 null
+    const { shortId } = req.params;
+    const authData = await User.findOne({ shortId }); //없으면 null
 
     if (!authData) {
       res.status(500);
@@ -48,9 +48,9 @@ router.get(
 router.post(
   "/add",
   asyncHandler(async (req, res, next) => {
-    const { email, movieId } = req.body;
+    const { shortId, movieId } = req.body;
 
-    const authData = await User.findOne({ email }); //없으면 null
+    const authData = await User.findOne({ shortId }); //없으면 null
     if (!authData) {
       res.status(500);
       res.json({
@@ -60,7 +60,7 @@ router.post(
     }
 
     const checkCart = await Cart.findOne({ userRef: authData }); //없으면 null
-
+    console.log("checkCart--", checkCart);
     if (!checkCart) {
       await Cart.create({
         userRef: authData,
@@ -75,6 +75,7 @@ router.post(
     }
 
     const cartList = checkCart.movieList;
+    console.log("cartList--", cartList);
     if (cartList.indexOf(movieId) !== -1) {
       res.status(401);
       res.json({
@@ -101,8 +102,8 @@ router.post(
 router.post(
   "/delete",
   asyncHandler(async (req, res, next) => {
-    const { email, movieId } = req.body;
-    const authData = await User.findOne({ email }); //없으면 null
+    const { shortId, movieId } = req.body;
+    const authData = await User.findOne({ shortId }); //없으면 null
     if (!authData) {
       res.status(500);
       res.json({

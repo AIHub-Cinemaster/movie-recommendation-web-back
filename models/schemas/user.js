@@ -6,19 +6,24 @@ module.exports = new Schema(
     shortId,
     email: {
       type: String,
-      reauired: true,
+      required: true,
     },
     password: {
       type: String,
-      reauired: false,
+      required: false,
     },
     name: {
       type: String,
-      reauired: true,
+      required: true,
     },
     type: {
       type: String, // local, kakao, naver
-      reauired: true,
+      required: true,
+    },
+    profileImg: {
+      type: String,
+      required: false,
+      default: "./uploads/default_profile.png", //굳이..? 고민해보자
     },
   },
   {

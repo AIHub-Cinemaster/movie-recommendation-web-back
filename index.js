@@ -15,7 +15,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads")); // 이미지 경로 접근 허용하도록
 
 //DB 연결
 mongoose.connect("mongodb://localhost:27017/Cinemaster");

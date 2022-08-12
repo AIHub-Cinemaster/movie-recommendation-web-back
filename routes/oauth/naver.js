@@ -42,6 +42,7 @@ router.get("/", async (req, res, next) => {
 });
 
 const checkUserData = async (userData, res) => {
+  console.log("checkUserData", checkUserData);
   const oAuthType = "naver";
   let checkEmail = await User.findOne({
     email: userData.email,
@@ -66,6 +67,7 @@ const checkUserData = async (userData, res) => {
     // 네이버연동 6번
     jwt.sign(
       {
+        shortId: checkEmail.shortId,
         email: checkEmail.email,
         name: checkEmail.name,
       },
@@ -85,6 +87,7 @@ const checkUserData = async (userData, res) => {
             accessToken: token,
             email: checkEmail.email,
             name: checkEmail.name,
+            shortId: checkEmail.shortId,
           });
         }
       },
