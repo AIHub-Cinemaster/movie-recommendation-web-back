@@ -3,8 +3,8 @@ const router = Router();
 const asyncHandler = require("./../utils/async-handler");
 const crypto = require("crypto");
 const { User } = require("../models");
-const { Cart } = require("../models");
-const { Star } = require("../models");
+// const { Cart } = require("../models");
+// const { Star } = require("../models");
 const jwt = require("jsonwebtoken");
 const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
@@ -30,7 +30,7 @@ let upload = multer({
 router.post(
   "/signUp",
   upload.single("file"),
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     let Imgfile = req.file;
     const { email, password, name } = req.body;
 
@@ -72,7 +72,7 @@ router.post(
 
 router.post(
   "/login",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     let hashPassword = passwordHash(password);
@@ -127,7 +127,7 @@ router.post(
 //비밀번호 찾기 : 2번
 router.post(
   "/find/password",
-  asyncHandler(async (req, res, nex) => {
+  asyncHandler(async (req, res) => {
     console.log(req.body);
     //email값을 가져옵니다.
     let { email } = req.body;
