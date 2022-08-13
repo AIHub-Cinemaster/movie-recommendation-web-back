@@ -54,7 +54,7 @@ const checkUserData = async (userData, res) => {
         email: userData.email,
         name: userData.name,
         type: oAuthType,
-        // profileImg: userData.profile_image,
+        profileImg: userData.profile_image,
       });
 
       checkEmail = await User.findOne({
