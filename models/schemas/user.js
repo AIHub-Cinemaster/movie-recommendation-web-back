@@ -1,5 +1,6 @@
 const { Schema } = require("mongoose");
 const shortId = require("./type/short-id");
+const serverUrl = require("./../../config/serverUrl");
 
 module.exports = new Schema(
   {
@@ -23,7 +24,7 @@ module.exports = new Schema(
     profileImg: {
       type: String,
       required: false,
-      default: "./uploads/default_profile.png", //굳이..? 고민해보자
+      default: serverUrl.url + "uploads/default_profile.png", //굳이..? 고민해보자
     },
   },
   {

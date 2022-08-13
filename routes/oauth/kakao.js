@@ -52,6 +52,7 @@ const checkUserData = async (userData, res) => {
         email: userData.kakao_account.email,
         name: userData.kakao_account.profile.nickname,
         type: oAuthType,
+        profileImg: userData.properties.profile_image,
       });
 
       checkEmail = await User.findOne({

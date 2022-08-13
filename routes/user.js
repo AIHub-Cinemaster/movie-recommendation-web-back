@@ -10,6 +10,7 @@ const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
 const multer = require("multer");
 const path = require("path");
+const serverUrl = require("./../config/serverUrl");
 
 let storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -37,16 +38,6 @@ router.post(
     let hashPassword = passwordHash(password);
     const checkEmail = await User.findOne({ email, type: "local" });
 
-    const file = req.file;
-    let filepath = "";
-
-    if (Imgfile) {
-      // 이미지 안보내줬으면 undefined로 온다
-      filepath = file.path;
-    } else {
-      filepath = "uploads\\default_profile.png";
-    }
-
     if (checkEmail) {
       // throw new Error("이미 가입된 이메일입니다.");
       res.status(500);
@@ -54,6 +45,15 @@ router.post(
         error: "이미 가입된 이메일입니다.",
       });
       return;
+    }
+
+    const file = req.file;
+    let filepath = "";
+    if (Imgfile) {
+      // 이미지 안보내줬으면 undefined로 온다
+      filepath = serverUrl.url + file.path;
+    } else {
+      filepath = serverUrl.url + "uploads/default_profile.png";
     }
 
     await User.create({
