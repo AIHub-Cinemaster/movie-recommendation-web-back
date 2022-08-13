@@ -7,9 +7,14 @@ const fileUploadRouter = require("./routes/fileUpload");
 const kakaoRouter = require("./routes/oauth/kakao");
 const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
-const recommendRouter = require("./routes/recommend");
+const reviewListRouter = require("./routes/reviewList");
 
-const authMiddleware = require("./utils/authMiddleware");
+/*
+TODO : 후순위 구현
+const recommendRouter = require("./routes/recommend");
+*/
+
+// const authMiddleware = require("./utils/authMiddleware");
 
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -46,8 +51,15 @@ app.use("/auth/naver", naverRouter);
 // review url 경로 라우팅
 app.use("/review", reviewRouter);
 
+// reviewlist url 경로 라우팅 (리뷰 목록 조회)
+app.use("/reviewlist", reviewListRouter);
+
+/*
+TODO : 후순위 구현
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
+*/
+
 app.use("/upload", fileUploadRouter);
 app.listen(8090, () => {
   console.log("server open");

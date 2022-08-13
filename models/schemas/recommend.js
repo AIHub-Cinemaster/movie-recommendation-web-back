@@ -4,9 +4,9 @@ const shortId = require("./type/short-id");
 module.exports = new Schema(
   {
     shortId,
-    stars: {
+    starRef: {
       type: Schema.Types.ObjectId,
-      ref: Star,
+      ref: "Star",
       required: true,
     },
     recommendList: [

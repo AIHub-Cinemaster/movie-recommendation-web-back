@@ -1,3 +1,5 @@
+/*
+TODO : 후순위 구현
 const { spawn } = require("node:child_process");
 
 // python.exe 경로
@@ -24,3 +26,4 @@ prediction.stdout.on("data", function (data) {
 });
 
 exports.recommendList = recommendList;
+*/

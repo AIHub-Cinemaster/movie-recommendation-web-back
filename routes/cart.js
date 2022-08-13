@@ -8,7 +8,7 @@ const router = Router();
 // 영화 찜목록 가져오기
 router.get(
   "/list/:shortId",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { shortId } = req.params;
     const authData = await User.findOne({ shortId }); //없으면 null
 
@@ -47,7 +47,7 @@ router.get(
 // 영화 찜 등록
 router.post(
   "/add",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { shortId, movieId } = req.body;
 
     const authData = await User.findOne({ shortId }); //없으면 null
@@ -101,9 +101,10 @@ router.post(
 // 영화 찜 삭제
 router.post(
   "/delete",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const { shortId, movieId } = req.body;
     const authData = await User.findOne({ shortId }); //없으면 null
+
     if (!authData) {
       res.status(500);
       res.json({
