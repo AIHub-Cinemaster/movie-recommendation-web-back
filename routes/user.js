@@ -3,14 +3,13 @@ const router = Router();
 const asyncHandler = require("./../utils/async-handler");
 const crypto = require("crypto");
 const { User } = require("../models");
-// const { Cart } = require("../models");
-// const { Star } = require("../models");
 const jwt = require("jsonwebtoken");
 const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
 const multer = require("multer");
 const path = require("path");
 const serverUrl = require("./../config/serverUrl");
+const defaultProfileImg = require("./../config/defaultProfileImg");
 
 let storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -28,14 +27,77 @@ let upload = multer({
   storage: storage,
 });
 
+// 유저정보 조회
+router.get(
+  "/:shortId",
+  asyncHandler(async (req, res) => {
+    const { shortId } = req.params;
+    const authData = await User.findOne({ shortId }); //없으면 null
+
+    if (!authData) {
+      res.status(500);
+      res.json({
+        fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
+      });
+      return;
+    }
+
+    res.json(authData);
+  }),
+);
+
+// 유저정보 수정
+router.post(
+  "/update",
+  upload.single("file"),
+  asyncHandler(async (req, res) => {
+    const { shortId, password, name, type } = req.body;
+    const authData = await User.findOne({ shortId, type }); //없으면 null
+
+    if (!authData) {
+      res.status(500);
+      res.json({
+        fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
+      });
+      return;
+    }
+    const hashPassword = passwordHash(password);
+    const imgfile = req.file;
+    const file = req.file;
+    let filepath = "";
+    let query = "";
+
+    if (imgfile) {
+      // 이미지 안보내줬으면 undefined로 온다
+      filepath = serverUrl.url + file.path;
+      query = {
+        password: hashPassword,
+        name,
+        type,
+        profileImg: filepath,
+      };
+    } else {
+      filepath = defaultProfileImg.url;
+      query = {
+        password: hashPassword,
+        name,
+        type,
+      };
+    }
+    console.log(query);
+    await User.updateOne({ shortId }, query);
+
+    res.json({ result: "유저 정보가 수정되었습니다." });
+  }),
+);
+
 router.post(
   "/signUp",
   upload.single("file"),
   asyncHandler(async (req, res) => {
-    let Imgfile = req.file;
     const { email, password, name } = req.body;
 
-    let hashPassword = passwordHash(password);
+    const hashPassword = passwordHash(password);
     const checkEmail = await User.findOne({ email, type: "local" });
 
     if (checkEmail) {
@@ -47,13 +109,14 @@ router.post(
       return;
     }
 
+    const imgfile = req.file;
     const file = req.file;
     let filepath = "";
-    if (Imgfile) {
+    if (imgfile) {
       // 이미지 안보내줬으면 undefined로 온다
       filepath = serverUrl.url + file.path;
     } else {
-      filepath = serverUrl.url + "uploads/default_profile.png";
+      filepath = defaultProfileImg.url;
     }
 
     await User.create({
