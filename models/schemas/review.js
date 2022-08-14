@@ -21,6 +21,11 @@ module.exports = new Schema(
       type: String,
       required: true,
     },
+    starRef: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Star",
+    },
   },
   {
     timestamps: true,
