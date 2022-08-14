@@ -11,11 +11,9 @@ const router = Router();
 * Read.
 리뷰 목록 조회
 
-TODO : 평점 추가
-? populate 조건식 추가
-
 TODO : 댓글 추가
 TODO : 좋아요 추가
+TODO : 리뷰 정렬 (좋아요 > 리뷰/별점 > 별점)
 */
 router.get(
   "/:movieId",
@@ -36,6 +34,7 @@ router.get(
     const result = await Promise.all(
       reviews.map((review) => {
         const data = {
+          shortId: review.userRef.shortId,
           author: review.userRef.name,
           title: review.title,
           content: review.content,

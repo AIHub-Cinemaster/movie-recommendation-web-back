@@ -12,8 +12,6 @@ const router = Router();
 /*
 * Read.
 유저별 리뷰 조회
-
-TODO : 평점 조회 추가
 */
 router.get(
   "/user/:shortId",
