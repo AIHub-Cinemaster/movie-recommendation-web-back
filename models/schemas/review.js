@@ -1,7 +1,8 @@
 const { Schema } = require("mongoose");
-Schema.Types.String.checkRequired((v) => typeof v === "string");
-
 const shortId = require("./type/short-id");
+
+// 빈 String 값 허용
+Schema.Types.String.checkRequired((v) => typeof v === "string");
 
 module.exports = new Schema(
   {
