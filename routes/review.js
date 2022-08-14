@@ -83,6 +83,10 @@ router.get(
 /*
 * Create.
 리뷰 작성
+
+! HotFix: title, content 빈 값으로 요청 시 에러 발생
+  -> "../models/review" 수정
+  -> mongoose.Schema.Types.String.checkRequired(v => typeof v === 'string');
 */
 router.post(
   "/add",
@@ -247,6 +251,8 @@ router.post(
 /*
 * Delete.
 리뷰 삭제
+
+! HotFix : 리뷰 삭제 시 평점도 삭제
 */
 router.post(
   "/delete",
@@ -265,7 +271,7 @@ router.post(
 
     const reviewData = await Review.findOne({
       $and: [{ userRef: authData }, { movieId }],
-    });
+    }).populate("starRef");
 
     if (!reviewData) {
       res.status(404);
