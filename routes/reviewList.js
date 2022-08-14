@@ -24,17 +24,10 @@ router.get(
       .populate("userRef")
       .populate("starRef", { starList: { $elemMatch: { movieId: movieId } } });
 
-    if (reviews.length === 0) {
-      res.status(404);
-      res.json({
-        fail: "리뷰가 존재하지 않습니다.",
-      });
-    }
-
     const result = await Promise.all(
       reviews.map((review) => {
         const data = {
-          shortId: review.userRef.shortId,
+          shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           title: review.title,
           content: review.content,
