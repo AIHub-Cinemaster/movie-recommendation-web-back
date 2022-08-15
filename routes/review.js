@@ -62,6 +62,7 @@ router.get(
 
         const data = {
           movieId: review.movieId,
+          shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           title: review.title,
           content: review.content,
