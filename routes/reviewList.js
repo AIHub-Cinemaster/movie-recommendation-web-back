@@ -12,7 +12,6 @@ const router = Router();
 영화별 리뷰 목록 조회
 
 TODO : 댓글 추가
-TODO : 좋아요 추가
 TODO : 리뷰 정렬 (좋아요 > 리뷰/별점 > 별점)
 */
 router.get(
@@ -27,7 +26,8 @@ router.get(
     const result = await Promise.all(
       reviews.map((review) => {
         const data = {
-          movieId: review.movieId,
+          movieId: review.movieId, // 프론트 요청으로 추가
+          reviewId: review.shortId,
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           title: review.title,
