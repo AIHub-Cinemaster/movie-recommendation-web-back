@@ -8,7 +8,7 @@ const kakaoRouter = require("./routes/oauth/kakao");
 const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
 const reviewListRouter = require("./routes/reviewList");
-
+const evaluationRouter = require("./routes/evaluation");
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
@@ -59,6 +59,8 @@ TODO : 후순위 구현
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
 */
+// 평가하기 경로 라우팅
+app.use("/eval", evaluationRouter);
 
 app.use("/upload", fileUploadRouter);
 app.listen(8090, () => {
