@@ -5,6 +5,40 @@ const asyncHandler = require("../utils/async-handler");
 
 const router = Router();
 
+// // 별점 평균 가져오기
+router.get(
+  "/average/:movieId",
+  asyncHandler(async (req, res) => {
+    const { movieId } = req.params;
+    const starAllData = await Star.find({});
+    let cnt = 0;
+    let sum = 0;
+
+    starAllData.forEach((x) => {
+      x.starList.forEach((y) => {
+        if (y.movieId === movieId) {
+          cnt += 1;
+          sum += y.star;
+        }
+      });
+    });
+
+    if (cnt === 0) {
+      res.json({
+        movieId: movieId,
+        result: 0,
+      });
+    } else {
+      res.json({
+        movieId: movieId,
+        result: sum / cnt,
+      });
+    }
+
+    return;
+  }),
+);
+
 // 별점 가져오기
 router.get(
   "/:shortId/:movieId",
