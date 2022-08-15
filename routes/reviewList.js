@@ -9,7 +9,7 @@ const router = Router();
 
 /*
 * Read.
-리뷰 목록 조회
+영화별 리뷰 목록 조회
 
 TODO : 댓글 추가
 TODO : 좋아요 추가
@@ -27,6 +27,7 @@ router.get(
     const result = await Promise.all(
       reviews.map((review) => {
         const data = {
+          movieId: review.movieId,
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           title: review.title,
