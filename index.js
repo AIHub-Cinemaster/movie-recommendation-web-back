@@ -12,7 +12,7 @@ const path = require("path");
 const likeRouter = require("./routes/like");
 const evaluationRouter = require("./routes/evaluation");
 const secret = require("./config/secret");
-const fs = required("fs");
+const fs = require("fs");
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
