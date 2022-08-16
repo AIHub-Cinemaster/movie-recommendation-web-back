@@ -191,19 +191,20 @@ const Login = () => {
   };
 
   //----------------------------- kakao oauth -----------------------------//
-  const REST_API_KEY = process.env.KAKAO_API_KEY;
-  const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI;
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
 
   // 카카오연동 1번
   const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
+  console.log(KAKAO_AUTH_URI);
   //----------------------------- naver oauth -----------------------------//
-  const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID;
-  const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET;
-  const NAVER_REDIRECT_URI = process.env.NAVER_REDIRECT_URI;
+  const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
+  const NAVER_CLIENT_SECRET = process.env.REACT_APP_NAVER_CLIENT_SECRET;
+  const NAVER_REDIRECT_URI = process.env.REACT_APP_NAVER_REDIRECT_URI;
   const STATE = "RAMDOM_STATE";
   // 네이버연동 1번
   const NAVER_AUTH_URI = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${STATE}`;
+  console.log(NAVER_AUTH_URI);
 
   return (
     <>
