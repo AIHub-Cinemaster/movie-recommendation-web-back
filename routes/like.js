@@ -28,7 +28,7 @@ router.post(
     const authData = await User.findOne({ shortId });
 
     if (!authData) {
-      res.status(401);
+      res.status(500);
       res.json({
         fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
       });

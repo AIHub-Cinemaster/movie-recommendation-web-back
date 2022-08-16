@@ -31,7 +31,8 @@ router.get(
 
     const reviewData = await Review.find({ userRef: authData })
       .populate("userRef")
-      .populate("starRef");
+      .populate("starRef")
+      .populate("likeRef");
 
     if (reviewData.length === 0) {
       res.status(404);
@@ -61,16 +62,26 @@ router.get(
           star = star.star;
         }
 
+        let likeCount = review.likeRef.likeCount;
+
+        if (likeCount >= 1) {
+          likeCount = review.likeRef.likeCount;
+        } else {
+          likeCount = 0;
+        }
+
         const data = {
           movieId: review.movieId,
           reviewId: review.shortId,
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
+          profileImg: review.userRef.profileImg,
           title: review.title,
           content: review.content,
           star: star,
           createdAt: moment(review.createdAt).fromNow(),
           updatedAt: moment(review.updatedAt).fromNow(),
+          likeCount: likeCount,
         };
         return data;
       }),
