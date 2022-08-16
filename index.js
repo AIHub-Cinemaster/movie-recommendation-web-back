@@ -8,7 +8,9 @@ const kakaoRouter = require("./routes/oauth/kakao");
 const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
 const reviewListRouter = require("./routes/reviewList");
+const likeRouter = require("./routes/like");
 const evaluationRouter = require("./routes/evaluation");
+
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
@@ -54,11 +56,15 @@ app.use("/review", reviewRouter);
 // reviewlist url 경로 라우팅 (리뷰 목록 조회)
 app.use("/reviewlist", reviewListRouter);
 
+// like url 경로 라우팅
+app.use("/like", likeRouter);
+
 /*
 TODO : 후순위 구현
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
 */
+
 // 평가하기 경로 라우팅
 app.use("/eval", evaluationRouter);
 
