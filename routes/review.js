@@ -2,10 +2,8 @@ const { Router } = require("express");
 const { User } = require("../models");
 const { Review } = require("../models");
 const { Star } = require("../models");
-<<<<<<< HEAD
-=======
 const { Like } = require("../models");
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
+
 const asyncHandler = require("../utils/async-handler");
 
 // UTC to KST
@@ -34,12 +32,8 @@ router.get(
 
     const reviewData = await Review.find({ userRef: authData })
       .populate("userRef")
-<<<<<<< HEAD
-      .populate("starRef");
-=======
       .populate("starRef")
       .populate("likeRef");
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 
     if (reviewData.length === 0) {
       res.status(404);
@@ -68,36 +62,18 @@ router.get(
         } else {
           star = star.star;
         }
-
-<<<<<<< HEAD
-        const data = {
-          movieId: review.movieId,
-          author: review.userRef.name,
-=======
-        let likeCount = review.likeRef.likeCount;
-
-        if (likeCount >= 1) {
-          likeCount = review.likeRef.likeCount;
-        } else {
-          likeCount = 0;
-        }
-
         const data = {
           movieId: review.movieId,
           reviewId: review.shortId,
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           profileImg: review.userRef.profileImg,
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
           title: review.title,
           content: review.content,
           star: star,
           createdAt: moment(review.createdAt).fromNow(),
           updatedAt: moment(review.updatedAt).fromNow(),
-<<<<<<< HEAD
-=======
           likeCount: likeCount,
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
         };
         return data;
       }),
@@ -215,8 +191,6 @@ router.post(
         res.json({
           result: "리뷰가 작성되었습니다.",
         });
-<<<<<<< HEAD
-=======
 
         /*
          * 리뷰 작성 후 작성된 리뷰의 "shortId" 기준으로 좋아요 Documnet 생성
@@ -248,7 +222,6 @@ router.post(
           { reviewId: reviewId },
           { $set: { likeRef: likeData } },
         );
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
       }
     }
   }),
@@ -257,11 +230,6 @@ router.post(
 /*
 * Update.
 리뷰 수정
-<<<<<<< HEAD
-
-TODO : 평점 수정 추가
-=======
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 */
 router.post(
   "/update",
@@ -318,12 +286,7 @@ router.post(
 /*
 * Delete.
 리뷰 삭제
-
-<<<<<<< HEAD
-! HotFix : 리뷰 삭제 시 평점도 삭제
-=======
 // ! HotFix : 리뷰 삭제 시 평점도 삭제
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 */
 router.post(
   "/delete",

@@ -9,13 +9,6 @@ const router = Router();
 
 /*
 * Read.
-<<<<<<< HEAD
-리뷰 목록 조회
-
-TODO : 댓글 추가
-TODO : 좋아요 추가
-TODO : 리뷰 정렬 (좋아요 > 리뷰/별점 > 별점)
-=======
 영화별 리뷰 목록 조회
 
 TODO : 댓글 추가
@@ -26,7 +19,6 @@ TODO: 프로필 이미지 경로 Response
 TODO: 리뷰 수정 시 기존에 작성했던 리뷰 보여주기
 TODO: 추천 알고리즘 수정
 TODO: 리뷰 아이디 기준으로 CRUD 코드 리팩토링
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 */
 router.get(
   "/:movieId",
@@ -35,15 +27,6 @@ router.get(
 
     const reviews = await Review.find({ movieId: movieId })
       .populate("userRef")
-<<<<<<< HEAD
-      .populate("starRef", { starList: { $elemMatch: { movieId: movieId } } });
-
-    const result = await Promise.all(
-      reviews.map((review) => {
-        const data = {
-          shortId: review.userRef.shortId, // 프론트 요청으로 추가
-          author: review.userRef.name,
-=======
       .populate("starRef", { starList: { $elemMatch: { movieId: movieId } } })
       .populate("likeRef");
 
@@ -75,16 +58,7 @@ router.get(
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           profileImg: review.userRef.profileImg,
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
-          title: review.title,
-          content: review.content,
-          star: review.starRef.starList[0].star,
-          createdAt: moment(review.createdAt).fromNow(),
-          updatedAt: moment(review.updatedAt).fromNow(),
-<<<<<<< HEAD
-=======
           likeCount: likeCount,
->>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
         };
         return data;
       }),
