@@ -6,11 +6,12 @@ const jwtConfig = require("../../config/jwtConfig");
 const { User } = require("../../models");
 
 const request = require("request-promise");
+const secret = require("./../../config/secret");
 
 router.get("/", async (req, res, next) => {
-  const NAVER_CLIENT_ID = "g7l8PXOSnPcSuI_Ocrpx";
-  const NAVER_CLIENT_SECRET = "XRngCKMBae";
-  const NAVER_REDIRECT_URI = "http://localhost:3001/oauth/naver/callback";
+  const NAVER_CLIENT_ID = secret.naverClientId;
+  const NAVER_CLIENT_SECRET = secret.naverClientSecret;
+  const NAVER_REDIRECT_URI = secret.naverRedirectURI;
   const STATE = req.query.state;
   const NAVER_CODE = req.query.code;
   const NAVER_API_URL = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${NAVER_CLIENT_ID}&client_secret=${NAVER_CLIENT_SECRET}&redirect_uri=${NAVER_REDIRECT_URI}&code=${NAVER_CODE}&state=${STATE}`;

@@ -8,8 +8,10 @@ const kakaoRouter = require("./routes/oauth/kakao");
 const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
 const reviewListRouter = require("./routes/reviewList");
-const evaluationRouter = require("./routes/evaluation");
 const path = require("path");
+const likeRouter = require("./routes/like");
+const evaluationRouter = require("./routes/evaluation");
+const secret = require("./config/secret");
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
@@ -25,11 +27,9 @@ app.use("/uploads", express.static("uploads")); // 이미지 경로 접근 허�
 
 //DB 연결
 // mongoose.connect("mongodb://localhost:27017/Cinemaster");
-mongoose.connect(
-  "mongodb+srv://jisu:4232@cinemaster.edkazqq.mongodb.net/?retryWrites=true&w=majority",
-);
+// "mongodb+srv://jisu:4232@cinemaster.edkazqq.mongodb.net/?retryWrites=true&w=majority",
+mongoose.connect(secret.dbConnet);
 
-//
 mongoose.connection.on("connected", () => {
   console.log("DB connect success");
 });
@@ -59,11 +59,15 @@ app.use("/review", reviewRouter);
 // reviewlist url 경로 라우팅 (리뷰 목록 조회)
 app.use("/reviewlist", reviewListRouter);
 
+// like url 경로 라우팅
+app.use("/like", likeRouter);
+
 /*
 TODO : 후순위 구현
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
 */
+
 // 평가하기 경로 라우팅
 app.use("/eval", evaluationRouter);
 

@@ -8,7 +8,7 @@ const jwtConfig = require("./../config/jwtConfig");
 const nodeMailer = require("nodemailer");
 const multer = require("multer");
 const path = require("path");
-const serverUrl = require("./../config/serverUrl");
+const secret = require("./../config/secret");
 const defaultProfileImg = require("./../config/defaultProfileImg");
 
 let storage = multer.diskStorage({
@@ -69,7 +69,7 @@ router.post(
 
     if (imgfile) {
       // 이미지 안보내줬으면 undefined로 온다
-      filepath = serverUrl.url + file.path;
+      filepath = secret.server + file.path;
       query = {
         password: hashPassword,
         name,
@@ -114,7 +114,7 @@ router.post(
     let filepath = "";
     if (imgfile) {
       // 이미지 안보내줬으면 undefined로 온다
-      filepath = serverUrl.url + file.path;
+      filepath = secret.server + file.path;
     } else {
       filepath = defaultProfileImg.url;
     }

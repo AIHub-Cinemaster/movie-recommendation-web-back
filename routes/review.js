@@ -2,6 +2,10 @@ const { Router } = require("express");
 const { User } = require("../models");
 const { Review } = require("../models");
 const { Star } = require("../models");
+<<<<<<< HEAD
+=======
+const { Like } = require("../models");
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 const asyncHandler = require("../utils/async-handler");
 
 // UTC to KST
@@ -30,7 +34,12 @@ router.get(
 
     const reviewData = await Review.find({ userRef: authData })
       .populate("userRef")
+<<<<<<< HEAD
       .populate("starRef");
+=======
+      .populate("starRef")
+      .populate("likeRef");
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 
     if (reviewData.length === 0) {
       res.status(404);
@@ -60,14 +69,35 @@ router.get(
           star = star.star;
         }
 
+<<<<<<< HEAD
         const data = {
           movieId: review.movieId,
           author: review.userRef.name,
+=======
+        let likeCount = review.likeRef.likeCount;
+
+        if (likeCount >= 1) {
+          likeCount = review.likeRef.likeCount;
+        } else {
+          likeCount = 0;
+        }
+
+        const data = {
+          movieId: review.movieId,
+          reviewId: review.shortId,
+          shortId: review.userRef.shortId, // 프론트 요청으로 추가
+          author: review.userRef.name,
+          profileImg: review.userRef.profileImg,
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
           title: review.title,
           content: review.content,
           star: star,
           createdAt: moment(review.createdAt).fromNow(),
           updatedAt: moment(review.updatedAt).fromNow(),
+<<<<<<< HEAD
+=======
+          likeCount: likeCount,
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
         };
         return data;
       }),
@@ -185,6 +215,40 @@ router.post(
         res.json({
           result: "리뷰가 작성되었습니다.",
         });
+<<<<<<< HEAD
+=======
+
+        /*
+         * 리뷰 작성 후 작성된 리뷰의 "shortId" 기준으로 좋아요 Documnet 생성
+         * 생성된 좋아요 Document를 리뷰 Document 내 "likeRef"에 참조하여 추가
+         */
+
+        // 리뷰 작성 후 작성된 "reviewId" 검색
+        const newReviewData = await Review.findOne({
+          $and: [{ userRef: authData }, { movieId }],
+        });
+
+        // "reviewId"를 포함하여 좋아요 Document 생성
+        await Like.create({
+          reviewRef: newReviewData,
+          likeCount: 0,
+          likeUsers: [],
+        });
+
+        // "reviewId"를 담는 변수
+        const reviewId = newReviewData.reviewId;
+
+        // 좋아요 Collection에서 작성된 리뷰 Document를 기준으로 검색
+        // 검색된 좋아요 Document를 "likeData" 변수에 할당
+        const likeData = await Like.findOne({ reviewRef: newReviewData });
+
+        // 리뷰 Collection에서 "reviewId"를 기준으로 검색
+        // 검색된 리뷰 Document에 좋아요 Document를 새로 추가
+        await Review.findOneAndUpdate(
+          { reviewId: reviewId },
+          { $set: { likeRef: likeData } },
+        );
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
       }
     }
   }),
@@ -193,8 +257,11 @@ router.post(
 /*
 * Update.
 리뷰 수정
+<<<<<<< HEAD
 
 TODO : 평점 수정 추가
+=======
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 */
 router.post(
   "/update",
@@ -252,7 +319,11 @@ router.post(
 * Delete.
 리뷰 삭제
 
+<<<<<<< HEAD
 ! HotFix : 리뷰 삭제 시 평점도 삭제
+=======
+// ! HotFix : 리뷰 삭제 시 평점도 삭제
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
 */
 router.post(
   "/delete",

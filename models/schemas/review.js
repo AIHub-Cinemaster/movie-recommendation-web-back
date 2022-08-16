@@ -6,7 +6,11 @@ Schema.Types.String.checkRequired((v) => typeof v === "string");
 
 module.exports = new Schema(
   {
+<<<<<<< HEAD
     shortId,
+=======
+    reviewId: shortId, // 유저 "shortId"와 헷갈려서 변수명 할당
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
     userRef: {
       type: Schema.Types.ObjectId,
       required: true,
@@ -24,6 +28,7 @@ module.exports = new Schema(
       type: String,
       required: true,
     },
+<<<<<<< HEAD
     likeCount: {
       type: Number,
     },
@@ -33,6 +38,12 @@ module.exports = new Schema(
         like: Boolean,
       },
     ],
+=======
+    likeRef: {
+      type: Schema.Types.ObjectId,
+      ref: "Like",
+    },
+>>>>>>> 4b373c09d8e64ef9675d5b66fc3419f1c58518cb
     starRef: {
       type: Schema.Types.ObjectId,
       required: true,
