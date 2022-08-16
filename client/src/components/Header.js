@@ -102,7 +102,6 @@ const Header = () => {
                       removeCookie("userData", { path: "/" });
                       navigate("/");
                       window.location.reload();
-                      window.location.reload();
                     }}
                   >
                     LOGOUT

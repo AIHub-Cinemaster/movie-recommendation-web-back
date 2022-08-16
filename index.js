@@ -12,6 +12,7 @@ const path = require("path");
 const likeRouter = require("./routes/like");
 const evaluationRouter = require("./routes/evaluation");
 const secret = require("./config/secret");
+const fs = required("fs");
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
@@ -23,6 +24,14 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
+
+try {
+  fs.readdirSync("uploads");
+} catch (error) {
+  console.error("uploads 폴더가 없어 uploads 폴더를 생성합니다.");
+  fs.mkdirSync("uploads");
+}
+
 app.use("/uploads", express.static("uploads")); // 이미지 경로 접근 허용하도록
 
 //DB 연결
