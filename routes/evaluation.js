@@ -15,7 +15,7 @@ router.get(
     /*
     movie Count 만큼 영화 뽑아서 응답
     */
-    const { movieNum } = req.params;
+    const { movieCount } = req.params;
     const FILE_NAME = "ratings_small.csv";
 
     const csvPath = path.join(
