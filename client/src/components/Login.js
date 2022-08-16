@@ -52,7 +52,7 @@ const Login = () => {
         setCookie("userData", res.data, { path: "/" });
         alert("로그인이 완료되었습니다.");
         navigate("/");
-        window.location.reload();//헤더-프로필 이미지 불러오려면 새로고침 필요함
+        window.location.reload(); //헤더-프로필 이미지 불러오려면 새로고침 필요함
       })
       .catch((e) => {
         console.log(e);
@@ -143,7 +143,7 @@ const Login = () => {
     sendSignUpData(formData, config)
       .then((res) => {
         alert(res.data.result);
-        window.location.reload(); 
+        window.location.reload();
       })
       .catch((e) => {
         setUpErrorMessage(e.response.data.error);
@@ -165,7 +165,7 @@ const Login = () => {
 
   //----------------------------- 프로필 이미지 -----------------------------//
   const [profileImage, setProfileImage] = useState(
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
   );
   const fileInput = useRef(null);
 
@@ -191,16 +191,16 @@ const Login = () => {
   };
 
   //----------------------------- kakao oauth -----------------------------//
-  const REST_API_KEY = "eb0d9d031d9fc9784711b4d3f038fecb";
-  const REDIRECT_URI = "http://localhost:3001/oauth/kakao/callback";
+  const REST_API_KEY = process.env.KAKAO_API_KEY;
+  const REDIRECT_URI = process.env.KAKAO_REDIRECT_URI;
 
   // 카카오연동 1번
   const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   //----------------------------- naver oauth -----------------------------//
-  const NAVER_CLIENT_ID = "g7l8PXOSnPcSuI_Ocrpx";
-  const NAVER_CLIENT_SECRET = "XRngCKMBae";
-  const NAVER_REDIRECT_URI = "http://localhost:3001/oauth/naver/callback";
+  const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID;
+  const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET;
+  const NAVER_REDIRECT_URI = process.env.NAVER_REDIRECT_URI;
   const STATE = "RAMDOM_STATE";
   // 네이버연동 1번
   const NAVER_AUTH_URI = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${STATE}`;
