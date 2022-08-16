@@ -29,6 +29,7 @@ mongoose.connect(
   "mongodb+srv://jisu:4232@cinemaster.edkazqq.mongodb.net/?retryWrites=true&w=majority",
 );
 
+//
 mongoose.connection.on("connected", () => {
   console.log("DB connect success");
 });
