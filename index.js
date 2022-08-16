@@ -9,6 +9,7 @@ const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
 const reviewListRouter = require("./routes/reviewList");
 const evaluationRouter = require("./routes/evaluation");
+const path = require("path");
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
