@@ -11,8 +11,10 @@ const reviewListRouter = require("./routes/reviewList");
 const path = require("path");
 const likeRouter = require("./routes/like");
 const evaluationRouter = require("./routes/evaluation");
-const secret = require("./config/secret");
 const fs = require("fs");
+
+// .env 파일 사용 위한 세팅
+require("dotenv").config();
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
@@ -37,7 +39,7 @@ app.use("/uploads", express.static("uploads")); // 이미지 경로 접근 허�
 //DB 연결
 // mongoose.connect("mongodb://localhost:27017/Cinemaster");
 // "mongodb+srv://jisu:4232@cinemaster.edkazqq.mongodb.net/?retryWrites=true&w=majority",
-mongoose.connect(secret.dbConnet);
+mongoose.connect(process.env.DB_CONNECT);
 
 mongoose.connection.on("connected", () => {
   console.log("DB connect success");

@@ -5,11 +5,10 @@ const jwt = require("jsonwebtoken");
 const jwtConfig = require("../../config/jwtConfig");
 const { User } = require("../../models");
 const crypto = require("crypto");
-const secret = require("./../../config/secret");
 
 router.get("/", async (req, res, next) => {
-  const REST_API_KEY = secret.kakaoApiKey;
-  const REDIRECT_URL = secret.kakaoRedirectURL;
+  const REST_API_KEY = process.env.KAKAO_API_KEY;
+  const REDIRECT_URL = process.env.KAKAO_REDIRECT_URL;
   const KAKAO_CODE = req.query.code;
   console.log(KAKAO_CODE);
 
