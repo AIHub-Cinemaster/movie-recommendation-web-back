@@ -1,5 +1,4 @@
 node_modules/
 view/
 uploads/
-
-.eslintrc.js
+client/
