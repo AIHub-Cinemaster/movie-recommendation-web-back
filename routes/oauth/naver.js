@@ -11,10 +11,10 @@ const secret = require("./../../config/secret");
 router.get("/", async (req, res, next) => {
   const NAVER_CLIENT_ID = secret.naverClientId;
   const NAVER_CLIENT_SECRET = secret.naverClientSecret;
-  const NAVER_REDIRECT_URI = secret.naverRedirectURI;
+  const NAVER_REDIRECT_URL = secret.naverRedirectURL;
   const STATE = req.query.state;
   const NAVER_CODE = req.query.code;
-  const NAVER_API_URL = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${NAVER_CLIENT_ID}&client_secret=${NAVER_CLIENT_SECRET}&redirect_uri=${NAVER_REDIRECT_URI}&code=${NAVER_CODE}&state=${STATE}`;
+  const NAVER_API_URL = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${NAVER_CLIENT_ID}&client_secret=${NAVER_CLIENT_SECRET}&redirect_uri=${NAVER_REDIRECT_URL}&code=${NAVER_CODE}&state=${STATE}`;
   const options = {
     url: NAVER_API_URL,
     headers: {

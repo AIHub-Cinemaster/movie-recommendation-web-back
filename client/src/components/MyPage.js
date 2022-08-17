@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import port from "./data/port.json";
 import MyProfile from "./pages/user/MyProfile";
 import MyWishList from "./pages/user/MyWishList";
 import MyWrittenList from "./pages/user/MyWrittenList";
@@ -36,13 +35,15 @@ const MyPage = () => {
 
   // cart DB에서 내 목록 가져오기 (only id)
   const getCartList = async () => {
-    return await axios.get(`${port.url}/cart/list/${cookies.userData.shortId}`);
+    return await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/cart/list/${cookies.userData.shortId}`,
+    );
   };
 
   // 무비 아이디를 넣어서 해당영화의 정보 가져오기
   const getMovieInfoById = async (movie_id) => {
     return await axios.get(
-      `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${API_KEY}&language=en-US`,
     );
   };
 

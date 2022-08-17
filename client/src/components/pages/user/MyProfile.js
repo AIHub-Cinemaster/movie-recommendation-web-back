@@ -2,7 +2,6 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import $ from "jquery";
 import React, { useState, useRef, useEffect } from "react";
-import port from "./../../../components/data/port.json";
 
 const MyProfile = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["userData"]);
@@ -33,7 +32,9 @@ const MyProfile = () => {
   }, []);
 
   const getUserInfo = async () => {
-    return await axios.get(`${port.url}/user/${cookies.userData.shortId}`);
+    return await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/user/${cookies.userData.shortId}`,
+    );
   };
 
   //----------------------------- 프로필 업로드 -----------------------------//
@@ -116,7 +117,11 @@ const MyProfile = () => {
 
   const sendModifyUserData = async (formData, config) => {
     // console.log("signUpdaata");
-    return await axios.post(`${port.url}/user/update`, formData, config);
+    return await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/user/update`,
+      formData,
+      config,
+    );
   };
 
   // 회원가입 data를 입력받는 함수

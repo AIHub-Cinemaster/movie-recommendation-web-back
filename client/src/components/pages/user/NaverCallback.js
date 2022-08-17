@@ -1,4 +1,3 @@
-import port from './../../data/port.json'
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +28,7 @@ const NaverCallBack = () => {
 
   // 네이버연동 3번
   const sendCode = async () => {
-    return await axios.get(`${port.url}/auth/naver`, {
+    return await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/naver`, {
       params: {
         code: NAVER_PARAMS,
       },

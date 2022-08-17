@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import port from "./data/port.json";
 import { contains } from "jquery";
 
 const Header = () => {
@@ -25,7 +24,9 @@ const Header = () => {
   }, []);
 
   const getUserInfo = async () => {
-    return await axios.get(`${port.url}/user/${cookies.userData.shortId}`);
+    return await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/user/${cookies.userData.shortId}`,
+    );
   };
   return (
     <header>

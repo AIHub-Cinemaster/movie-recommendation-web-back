@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import port from "./../components/data/port.json";
 import { useNavigate } from "react-router-dom";
 
 const MyPageLogin = () => {
@@ -25,7 +24,10 @@ const MyPageLogin = () => {
 
   const sendSignInData = async () => {
     // console.log(signInData);
-    return await axios.post(port.url + "/user/login", { email, password });
+    return await axios.post(process.env.REACT_APP_SERVER_URL + "/user/login", {
+      email,
+      password,
+    });
   };
 
   // 로그인 data를 입력받는 함수
@@ -54,9 +56,7 @@ const MyPageLogin = () => {
         <button type="button" onClick={onClickEnter}>
           Enter
         </button>
-        <p className="message">
-          본인확인이 필요합니다.
-        </p>
+        <p className="message">본인확인이 필요합니다.</p>
       </div>
     </div>
   );

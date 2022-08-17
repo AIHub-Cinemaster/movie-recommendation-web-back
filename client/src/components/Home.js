@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { movieAction } from "../redux/actions/MovieAction";
 import { useDispatch, useSelector } from "react-redux/es/exports";
-import {useCookies} from "react-cookie";
+import { useCookies } from "react-cookie";
 import axios from "axios";
-import port from './data/port.json'
 import Banner from "../components/Banner";
 import MovieSlide from "../components/MovieSlide";
 import ClipLoader from "react-spinners/ClipLoader";
-import './../assets/css/App.css'
+import "./../assets/css/App.css";
 
 const Home = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["userData"]);
@@ -17,23 +16,26 @@ const Home = () => {
     useSelector((state) => state.movie);
 
   const [myCart, setMyCart] = useState([]);
-  
+
   useEffect(() => {
     dispatch(movieAction.getMovies());
 
-    if(cookies.userData){
-      getCartList().then(res=>{
-        setMyCart(res.data.result)
-      }).catch(err=>{
-        alert("위시리스트 오류",err)
-      })
+    if (cookies.userData) {
+      getCartList()
+        .then((res) => {
+          setMyCart(res.data.result);
+        })
+        .catch((err) => {
+          alert("위시리스트 오류", err);
+        });
     }
-    
   }, []);
 
   const getCartList = async () => {
-    return await axios.get(`${port.url}/cart/list/${cookies.userData.shortId}`)
-  }
+    return await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/cart/list/${cookies.userData.shortId}`,
+    );
+  };
 
   // loading이 true면 loading spinners, false면 data
   // true: data 도착전, false: data 도착후 or err
@@ -42,7 +44,7 @@ const Home = () => {
       <div className="loading-box">
         <ClipLoader color="#ffff" loading={loading} size={150} />
       </div>
-    )
+    );
   }
 
   return (
@@ -69,7 +71,6 @@ const Home = () => {
         <h1 className="white-big-font">Upcoming Movie</h1>
         <MovieSlide movies={upComingMovies} myCart={myCart} />
       </div>
-
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import port from './../../data/port.json'
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +28,7 @@ const KakaoCallBack = () => {
 
   // 카카오연동 3번
   const sendCode = async () => {
-    return await axios.get(`${port.url}/auth/kakao`, {
+    return await axios.get(`${process.env.REACT_APP_SERVER_URL}/auth/kakao`, {
       params: {
         code: KAKAO_PARAMS,
       },

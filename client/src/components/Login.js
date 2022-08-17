@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import $ from "jquery";
-import port from "./../components/data/port.json";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import "./../assets/css/Login.css";
@@ -73,7 +72,10 @@ const Login = () => {
 
   const sendSignInData = async () => {
     // console.log(signInData);
-    return await axios.post(port.url + "/user/login", signInData);
+    return await axios.post(
+      process.env.REACT_APP_SERVER_URL + "/user/login",
+      signInData,
+    );
   };
 
   //----------------------------- 회원가입 -----------------------------//
@@ -152,7 +154,11 @@ const Login = () => {
 
   const sendSignUpData = async (formData, config) => {
     // console.log("signUpdaata");
-    return await axios.post(`${port.url}/user/signUp`, formData, config);
+    return await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/user/signUp`,
+      formData,
+      config,
+    );
   };
 
   // 회원가입 data를 입력받는 함수
@@ -192,19 +198,19 @@ const Login = () => {
 
   //----------------------------- kakao oauth -----------------------------//
   const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY;
-  const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+  const REDIRECT_URL = process.env.REACT_APP_KAKAO_REDIRECT_URL;
 
   // 카카오연동 1번
-  const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  console.log(KAKAO_AUTH_URI);
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
+  console.log(KAKAO_AUTH_URL);
   //----------------------------- naver oauth -----------------------------//
   const NAVER_CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
   const NAVER_CLIENT_SECRET = process.env.REACT_APP_NAVER_CLIENT_SECRET;
-  const NAVER_REDIRECT_URI = process.env.REACT_APP_NAVER_REDIRECT_URI;
+  const NAVER_REDIRECT_URL = process.env.REACT_APP_NAVER_REDIRECT_URL;
   const STATE = "RAMDOM_STATE";
   // 네이버연동 1번
-  const NAVER_AUTH_URI = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=${STATE}`;
-  console.log(NAVER_AUTH_URI);
+  const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URL}&state=${STATE}`;
+  console.log(NAVER_AUTH_URL);
 
   return (
     <>
@@ -245,13 +251,13 @@ const Login = () => {
               </p>
 
               <div className="social-container">
-                <a href={NAVER_AUTH_URI} className="social">
+                <a href={NAVER_AUTH_URL} className="social">
                   <img src={naverLogin} width="50px" />
                 </a>
                 <a href="#" className="social">
                   <img src={googleLogin} width="50px" />
                 </a>
-                <a href={KAKAO_AUTH_URI} className="social">
+                <a href={KAKAO_AUTH_URL} className="social">
                   <img src={kakaoLogin} width="50px" />
                 </a>
               </div>

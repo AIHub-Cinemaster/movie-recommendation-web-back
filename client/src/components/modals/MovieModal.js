@@ -8,7 +8,6 @@ import GetSimilarMovies from "./contents/GetSimilarMovies";
 import Reviews from "./contents/Reviews";
 import heartGrey from "./../../assets/images/heartGrey.png";
 import heartRed from "./../../assets/images/heartRed.png";
-import port from "./../data/port.json";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -36,14 +35,11 @@ const customStyles = {
     right: 0,
     bottom: 0,
     backgroundColor: "rgba(051, 051, 051, 0.5)",
-    backdropFilter: "blur(7px)"
+    backdropFilter: "blur(7px)",
   },
 };
 
-
-
 const MovieModal = ({ isOpen, setOpen, data, isHeart }) => {
-  
   const [cookies, setCookie, removeCookie] = useCookies(["userData"]);
   const [trailerKey, setTrailerKey] = useState("");
   const [inCart, setInCart] = useState(isHeart);
@@ -51,7 +47,7 @@ const MovieModal = ({ isOpen, setOpen, data, isHeart }) => {
   useEffect(() => {
     axios
       .get(
-        `https://api.themoviedb.org/3/movie/${data.id}/videos?api_key=${API_KEY}&language=en-US`
+        `https://api.themoviedb.org/3/movie/${data.id}/videos?api_key=${API_KEY}&language=en-US`,
       )
       .then((res) => {
         res.data.results.map((item) => {
@@ -97,13 +93,13 @@ const MovieModal = ({ isOpen, setOpen, data, isHeart }) => {
   };
 
   const putCart = async () => {
-    return await axios.post(port.url + "/cart/add", {
+    return await axios.post(process.env.REACT_APP_SERVER_URL + "/cart/add", {
       shortId: cookies.userData.shortId,
       movieId: data.id,
     });
   };
   const pullCart = async () => {
-    return await axios.post(port.url + "/cart/delete", {
+    return await axios.post(process.env.REACT_APP_SERVER_URL + "/cart/delete", {
       shortId: cookies.userData.shortId,
       movieId: data.id,
     });
@@ -117,7 +113,7 @@ const MovieModal = ({ isOpen, setOpen, data, isHeart }) => {
     >
       <div className="trailer-box">
         <iframe
-          style={{ width: "850px", height: "480px", border: "none"}}
+          style={{ width: "850px", height: "480px", border: "none" }}
           src={youtubeUrl}
           title="YouTube video player"
           frameBorder="0"
@@ -125,18 +121,16 @@ const MovieModal = ({ isOpen, setOpen, data, isHeart }) => {
           allowFullScreen
         />
       </div>
-      
+
       <div className="modal-box">
-        <h1 className="white-xl-font mb-1 mr-5 set-inline">
-          {data.title}
-        </h1>
-        
-        <p className="grey-small-font mb-4">{data.vote_average}   /   {data.release_date}</p>
+        <h1 className="white-xl-font mb-1 mr-5 set-inline">{data.title}</h1>
+
+        <p className="grey-small-font mb-4">
+          {data.vote_average} / {data.release_date}
+        </p>
 
         <span className="white-small-font">SUMMARY</span>
-        <p className="grey-small-font mt-1">
-          {data.overview}
-        </p>
+        <p className="grey-small-font mt-1">{data.overview}</p>
         <div className="right mt-3">
           {inCart ? (
             <>
@@ -148,8 +142,7 @@ const MovieModal = ({ isOpen, setOpen, data, isHeart }) => {
             </>
           )}
         </div>
-        
-        
+
         <h1 className="white-big-font" style={{ marginTop: "30px" }}>
           Recommendations
         </h1>
