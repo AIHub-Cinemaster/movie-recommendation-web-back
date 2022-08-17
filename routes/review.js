@@ -72,7 +72,7 @@ router.get(
 
         const data = {
           movieId: review.movieId,
-          reviewId: review.shortId,
+          reviewId: review.reviewId,
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           profileImg: review.userRef.profileImg,
