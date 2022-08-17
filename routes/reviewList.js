@@ -18,6 +18,7 @@ TODO: 리뷰 조회 시 좋아요 개수 Response
 TODO: 프로필 이미지 경로 Response
 TODO: 리뷰 수정 시 기존에 작성했던 리뷰 보여주기
 TODO: 추천 알고리즘 수정
+
 TODO: 리뷰 아이디 기준으로 CRUD 코드 리팩토링
 */
 router.get(
@@ -32,6 +33,7 @@ router.get(
 
     const result = await Promise.all(
       reviews.map((review) => {
+        console.log(review);
         let likeCount = review.likeRef.likeCount;
 
         if (likeCount >= 1) {
@@ -40,21 +42,9 @@ router.get(
           likeCount = 0;
         }
 
-        // if (isEmptyObject(likeCount)) {
-        //   likeCount = review.likeRef.likeCount;
-        //   console.log("true");
-        // } else {
-        //   // likeCount = 0;
-        //   console.log("------------------------------------");
-        //   console.log("false");
-        //   console.log("------------------------------------");
-        //   console.log(likeCount.length);
-        //   console.log(typeof likeCount);
-        // }
-
         const data = {
           movieId: review.movieId, // 프론트 요청으로 추가
-          reviewId: review.shortId,
+          reviewId: review.reviewId,
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           profileImg: review.userRef.profileImg,
