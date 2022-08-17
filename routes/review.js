@@ -3,7 +3,6 @@ const { User } = require("../models");
 const { Review } = require("../models");
 const { Star } = require("../models");
 const { Like } = require("../models");
-
 const asyncHandler = require("../utils/async-handler");
 
 // UTC to KST
@@ -62,9 +61,18 @@ router.get(
         } else {
           star = star.star;
         }
+
+        let likeCount = review.likeRef.likeCount;
+
+        if (likeCount >= 1) {
+          likeCount = review.likeRef.likeCount;
+        } else {
+          likeCount = 0;
+        }
+
         const data = {
           movieId: review.movieId,
-          reviewId: review.shortId,
+          reviewId: review.reviewId,
           shortId: review.userRef.shortId, // 프론트 요청으로 추가
           author: review.userRef.name,
           profileImg: review.userRef.profileImg,
@@ -286,6 +294,7 @@ router.post(
 /*
 * Delete.
 리뷰 삭제
+
 // ! HotFix : 리뷰 삭제 시 평점도 삭제
 */
 router.post(

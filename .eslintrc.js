@@ -7,10 +7,15 @@ module.exports = {
   extends: ["eslint:recommended", "plugin:prettier/recommended"],
 
   // ESLint가 ES6 ~ ES7을 파싱할 때 생기는 문제 -> "babel-eslint" 패키지 설치로 해결
-  parser: "babel-eslint",
+  parser: "@babel/eslint-parser",
 
   // 코드를 해석하는 parser에 대한 설정
   parserOptions: {
+    requireConfigFile: false,
+    babelOptions: {
+      babelrc: false,
+      configFile: false,
+    },
     // 자바스크립트 버전, 7은 ECMA2016
     ecmaVersion: 6,
     // 모듈 export를 위해 import, export를 사용 가능여부를 설정, script는 사용불가
@@ -27,6 +32,7 @@ module.exports = {
     browser: false,
     // node.js에서 console과 같은 전역변수 사용 여부
     node: true,
+    es6: true,
   },
   // ESLint가 무시할 디렉토리, 파일을 설정
   ignorePatterns: ["node_modules/"],
