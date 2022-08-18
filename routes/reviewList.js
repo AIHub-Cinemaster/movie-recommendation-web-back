@@ -29,6 +29,7 @@ router.get(
       .populate("starRef", { starList: { $elemMatch: { movieId: movieId } } })
       .populate("likeRef");
 
+    console.log("reviews", reviews);
     const result = await Promise.all(
       reviews.map((review) => {
         let like = review.likeRef.likeUsers.find((element) => {
@@ -42,8 +43,11 @@ router.get(
          * 영화별 리뷰 조회 시 유저의 좋아요 유/무 판별을 위해
          * 각 리뷰 데이터에 좋아요 누른 유저를 배열로 추가
          */
+
         const likeUsers = review.likeRef.likeUsers;
         let userList = [];
+
+        console.log("likeUsers", likeUsers);
 
         likeUsers.map((user) => {
           userList.push(user.user);

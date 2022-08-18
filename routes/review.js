@@ -211,9 +211,9 @@ router.post(
         starRef: starData,
       });
 
-      res.json({
-        result: "리뷰가 작성되었습니다.",
-      });
+      // res.json({
+      //   result: "리뷰가 작성되었습니다.",
+      // });
 
       /*
        * 리뷰 작성 후 작성된 리뷰의 "shortId" 기준으로 좋아요 Documnet 생성
@@ -244,6 +244,10 @@ router.post(
       await Review.findOneAndUpdate(
         { reviewId: reviewId },
         { $set: { likeRef: likeData } },
+      ).then(
+        res.json({
+          result: "리뷰가 작성되었습니다.",
+        }),
       );
     }
   }),
@@ -423,10 +427,10 @@ router.post(
     await Star.updateOne(
       { userRef: authData },
       { $pull: { starList: { movieId: movieId } } },
-    );
-
-    res.json({
-      result: "리뷰가 삭제되었습니다.",
+    ).then(() => {
+      res.json({
+        result: "리뷰가 삭제되었습니다.",
+      });
     });
   }),
 );

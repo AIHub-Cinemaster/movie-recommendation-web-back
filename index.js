@@ -11,14 +11,13 @@ const reviewListRouter = require("./routes/reviewList");
 const path = require("path");
 const likeRouter = require("./routes/like");
 const evaluationRouter = require("./routes/evaluation");
+
 const fs = require("fs");
 
 // .env 파일 사용 위한 세팅
 require("dotenv").config();
-/*
-TODO : 후순위 구현
+
 const recommendRouter = require("./routes/recommend");
-*/
 
 // const authMiddleware = require("./utils/authMiddleware");
 
@@ -73,23 +72,20 @@ app.use("/reviewlist", reviewListRouter);
 // like url 경로 라우팅
 app.use("/like", likeRouter);
 
-/*
-TODO : 후순위 구현
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
-*/
 
 // 평가하기 경로 라우팅
 app.use("/eval", evaluationRouter);
 
 app.use("/upload", fileUploadRouter);
 
-//api/index.js
-app.use(express.static(path.join(__dirname, "/client/build")));
+// //api/index.js
+// app.use(express.static(path.join(__dirname, "/client/build")));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+// });
 
 //api/index.js
 const port = process.env.PORT || 5000;
