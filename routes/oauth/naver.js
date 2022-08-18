@@ -8,12 +8,12 @@ const { User } = require("../../models");
 const request = require("request-promise");
 
 router.get("/", async (req, res, next) => {
-  const NAVER_CLIENT_ID = "g7l8PXOSnPcSuI_Ocrpx";
-  const NAVER_CLIENT_SECRET = "XRngCKMBae";
-  const NAVER_REDIRECT_URI = "http://localhost:3001/oauth/naver/callback";
+  const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID;
+  const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET;
+  const NAVER_REDIRECT_URL = process.env.NAVER_REDIRECT_URL;
   const STATE = req.query.state;
   const NAVER_CODE = req.query.code;
-  const NAVER_API_URL = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${NAVER_CLIENT_ID}&client_secret=${NAVER_CLIENT_SECRET}&redirect_uri=${NAVER_REDIRECT_URI}&code=${NAVER_CODE}&state=${STATE}`;
+  const NAVER_API_URL = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${NAVER_CLIENT_ID}&client_secret=${NAVER_CLIENT_SECRET}&redirect_uri=${NAVER_REDIRECT_URL}&code=${NAVER_CODE}&state=${STATE}`;
   const options = {
     url: NAVER_API_URL,
     headers: {

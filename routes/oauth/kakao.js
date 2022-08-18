@@ -7,8 +7,8 @@ const { User } = require("../../models");
 const crypto = require("crypto");
 
 router.get("/", async (req, res, next) => {
-  const REST_API_KEY = "eb0d9d031d9fc9784711b4d3f038fecb";
-  const REDIRECT_URI = "http://localhost:3001/oauth/kakao/callback";
+  const REST_API_KEY = process.env.KAKAO_API_KEY;
+  const REDIRECT_URL = process.env.KAKAO_REDIRECT_URL;
   const KAKAO_CODE = req.query.code;
   console.log(KAKAO_CODE);
 
@@ -16,7 +16,7 @@ router.get("/", async (req, res, next) => {
     // 카카오연동 4번
     await axios
       .post(
-        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${KAKAO_CODE}`,
+        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&code=${KAKAO_CODE}`,
         {
           headers: {
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",

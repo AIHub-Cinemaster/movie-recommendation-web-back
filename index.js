@@ -8,8 +8,13 @@ const kakaoRouter = require("./routes/oauth/kakao");
 const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
 const reviewListRouter = require("./routes/reviewList");
+const path = require("path");
+const likeRouter = require("./routes/like");
 const evaluationRouter = require("./routes/evaluation");
 const fs = require("fs");
+
+// .env 파일 사용 위한 세팅
+require("dotenv").config();
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
@@ -28,13 +33,13 @@ try {
   console.error("uploads 폴더가 없어 uploads 폴더를 생성합니다.");
   fs.mkdirSync("uploads");
 }
+
 app.use("/uploads", express.static("uploads")); // 이미지 경로 접근 허용하도록
 
 //DB 연결
 // mongoose.connect("mongodb://localhost:27017/Cinemaster");
-mongoose.connect(
-  "mongodb+srv://jisu:4232@cinemaster.edkazqq.mongodb.net/?retryWrites=true&w=majority",
-);
+// "mongodb+srv://jisu:4232@cinemaster.edkazqq.mongodb.net/?retryWrites=true&w=majority",
+mongoose.connect(process.env.DB_CONNECT);
 
 mongoose.connection.on("connected", () => {
   console.log("DB connect success");
@@ -65,15 +70,29 @@ app.use("/review", reviewRouter);
 // reviewlist url 경로 라우팅 (리뷰 목록 조회)
 app.use("/reviewlist", reviewListRouter);
 
+// like url 경로 라우팅
+app.use("/like", likeRouter);
+
 /*
 TODO : 후순위 구현
 // recommend url 경로 라우팅
 app.use("/recommend", recommendRouter);
 */
+
 // 평가하기 경로 라우팅
 app.use("/eval", evaluationRouter);
 
 app.use("/upload", fileUploadRouter);
-app.listen(8090, () => {
-  console.log("server open");
+
+//api/index.js
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+});
+
+//api/index.js
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log("success!");
 });
