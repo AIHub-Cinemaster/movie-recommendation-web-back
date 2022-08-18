@@ -238,6 +238,8 @@ router.post(
 /*
 * Update.
 리뷰 수정
+
+TODO: 리뷰 수정 시 기존 내용 보이게
 */
 router.post(
   "/update",
@@ -284,10 +286,85 @@ router.post(
         result: "리뷰가 수정되었습니다.",
       });
     } else {
+      res.status(404);
       res.json({
         fail: "작성한 리뷰가 존재하지 않습니다.",
       });
     }
+  }),
+);
+
+/*
+* Read.
+리뷰 수정 시 기존에 작성했던 리뷰 조회 기능
+*/
+router.get(
+  "/find/:shortId/:reviewId",
+  asyncHandler(async (req, res) => {
+    const { shortId, reviewId } = req.params;
+
+    const authData = await User.findOne({ shortId });
+
+    if (!authData) {
+      res.status(401);
+      res.json({
+        fail: "User DB 에서 유저 정보를 찾을 수 없습니다.",
+      });
+      return;
+    }
+
+    const reviewData = await Review.findOne({ reviewId })
+      .populate("userRef")
+      .populate("starRef")
+      .populate("likeRef");
+
+    console.log(reviewData);
+
+    const movieId = reviewData.movieId;
+
+    const starData = await Star.findOne(
+      { userRef: authData },
+      { starList: { $elemMatch: { movieId: movieId } } },
+    );
+    console.log(starData);
+
+    let star = starData.starList[0].star;
+    console.log(star);
+
+    /*
+      리뷰는 작성했지만 별점은 등록하지 않았을 때,
+      별점 기본값을 0으로 설정
+      */
+    if (!star) {
+      star = 0;
+    }
+
+    let likeCount = reviewData.likeRef.likeCount;
+
+    if (likeCount >= 1) {
+      likeCount = reviewData.likeRef.likeCount;
+    } else {
+      likeCount = 0;
+    }
+
+    const result = {
+      movieId: movieId,
+      reviewId: reviewData.reviewId,
+      shortId: reviewData.userRef.shortId,
+      author: reviewData.userRef.name,
+      profileImg: reviewData.userRef.profileImg,
+      title: reviewData.title,
+      content: reviewData.content,
+      star: star,
+      createdAt: moment(reviewData.createdAt).fromNow(),
+      updatedAt: moment(reviewData.updatedAt).fromNow(),
+      likeCount: likeCount,
+    };
+
+    if (result) {
+      res.json(result);
+    }
+    return;
   }),
 );
 
