@@ -178,59 +178,56 @@ router.post(
         );
       }
 
+      /*
+      * 프론트 요청
+      * 리뷰 유/무 유효성 검사 삭제
       const reviewData = await Review.findOne({
         $and: [{ userRef: authData }, { movieId }],
       });
+      */
 
-      if (reviewData) {
-        res.status(400);
-        res.json({
-          fail: "이미 작성한 리뷰가 존재합니다.",
-        });
-      } else {
-        await Review.create({
-          userRef: authData,
-          movieId: movieId,
-          title: title,
-          content: content,
-          starRef: starData,
-        });
+      await Review.create({
+        userRef: authData,
+        movieId: movieId,
+        title: title,
+        content: content,
+        starRef: starData,
+      });
 
-        res.json({
-          result: "리뷰가 작성되었습니다.",
-        });
+      res.json({
+        result: "리뷰가 작성되었습니다.",
+      });
 
-        /*
-         * 리뷰 작성 후 작성된 리뷰의 "shortId" 기준으로 좋아요 Documnet 생성
-         * 생성된 좋아요 Document를 리뷰 Document 내 "likeRef"에 참조하여 추가
-         */
+      /*
+       * 리뷰 작성 후 작성된 리뷰의 "shortId" 기준으로 좋아요 Documnet 생성
+       * 생성된 좋아요 Document를 리뷰 Document 내 "likeRef"에 참조하여 추가
+       */
 
-        // 리뷰 작성 후 작성된 "reviewId" 검색
-        const newReviewData = await Review.findOne({
-          $and: [{ userRef: authData }, { movieId }],
-        });
+      // 리뷰 작성 후 작성된 "reviewId" 검색
+      const newReviewData = await Review.findOne({
+        $and: [{ userRef: authData }, { movieId }],
+      });
 
-        // "reviewId"를 포함하여 좋아요 Document 생성
-        await Like.create({
-          reviewRef: newReviewData,
-          likeCount: 0,
-          likeUsers: [],
-        });
+      // "reviewId"를 포함하여 좋아요 Document 생성
+      await Like.create({
+        reviewRef: newReviewData,
+        likeCount: 0,
+        likeUsers: [],
+      });
 
-        // "reviewId"를 담는 변수
-        const reviewId = newReviewData.reviewId;
+      // "reviewId"를 담는 변수
+      const reviewId = newReviewData.reviewId;
 
-        // 좋아요 Collection에서 작성된 리뷰 Document를 기준으로 검색
-        // 검색된 좋아요 Document를 "likeData" 변수에 할당
-        const likeData = await Like.findOne({ reviewRef: newReviewData });
+      // 좋아요 Collection에서 작성된 리뷰 Document를 기준으로 검색
+      // 검색된 좋아요 Document를 "likeData" 변수에 할당
+      const likeData = await Like.findOne({ reviewRef: newReviewData });
 
-        // 리뷰 Collection에서 "reviewId"를 기준으로 검색
-        // 검색된 리뷰 Document에 좋아요 Document를 새로 추가
-        await Review.findOneAndUpdate(
-          { reviewId: reviewId },
-          { $set: { likeRef: likeData } },
-        );
-      }
+      // 리뷰 Collection에서 "reviewId"를 기준으로 검색
+      // 검색된 리뷰 Document에 좋아요 Document를 새로 추가
+      await Review.findOneAndUpdate(
+        { reviewId: reviewId },
+        { $set: { likeRef: likeData } },
+      );
     }
   }),
 );
@@ -238,8 +235,6 @@ router.post(
 /*
 * Update.
 리뷰 수정
-
-TODO: 리뷰 수정 시 기존 내용 보이게
 */
 router.post(
   "/update",
