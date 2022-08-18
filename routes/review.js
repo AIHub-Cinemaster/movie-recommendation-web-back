@@ -34,13 +34,17 @@ router.get(
       .populate("starRef")
       .populate("likeRef");
 
-    if (reviewData.length === 0) {
-      res.status(404);
-      res.json({
-        fail: "작성한 리뷰가 존재하지 않습니다.",
-      });
-      return;
-    }
+    /*
+    * 프론트 요청
+    * 리뷰 조회 시 리뷰 유/무 유효성 검사 삭제
+    // if (reviewData.length === 0) {
+    //   res.status(404);
+    //   res.json({
+    //     fail: "작성한 리뷰가 존재하지 않습니다.",
+    //   });
+    //   return;
+    // }
+    */
 
     const starData = await Star.findOne({ userRef: authData });
 
@@ -239,7 +243,7 @@ router.post(
 * Update.
 리뷰 수정
 
-TODO: 리뷰 수정 시 기존 내용 보이게
+완료 TODO : 리뷰 수정 시 기존 내용 보이게
 */
 router.post(
   "/update",
@@ -332,9 +336,9 @@ router.get(
     console.log(star);
 
     /*
-      리뷰는 작성했지만 별점은 등록하지 않았을 때,
-      별점 기본값을 0으로 설정
-      */
+    리뷰는 작성했지만 별점은 등록하지 않았을 때,
+    별점 기본값을 0으로 설정
+    */
     if (!star) {
       star = 0;
     }
