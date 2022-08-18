@@ -166,7 +166,7 @@ router.get(
     }
     const checkRecommend = await Recommend.findOne({ userRef: authData }); //없으면 null
     if (!checkRecommend) {
-      res.status(500);
+      // res.status(500);
       res.json({
         shortId,
         success: false,

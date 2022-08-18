@@ -34,80 +34,85 @@ router.get(
       .populate("starRef")
       .populate("likeRef");
 
-    /*
-    * 프론트 요청
-    * 리뷰 조회 시 리뷰 유/무 유효성 검사 삭제
-    // if (reviewData.length === 0) {
-    //   res.status(404);
-    //   res.json({
-    //     fail: "작성한 리뷰가 존재하지 않습니다.",
-    //   });
-    //   return;
-    // }
-    */
+    if (!reviewData) {
+      res.json(0);
+    } else {
+      // * 프론트 요청
+      // * 리뷰 조회 시 리뷰 유/무 유효성 검사 삭제
 
-    const starData = await Star.findOne({ userRef: authData });
+      // ! 리뷰 유효성 검사
+      if (reviewData.length === 0) {
+        // res.status(404);
+        res.json({
+          success: false,
+          result: "유저는 존재하지만, 작성한 리뷰가 존재하지 않습니다.",
+        });
+        return;
+      }
 
-    const result = await Promise.all(
-      reviewData.map((review) => {
-        let star = starData.starList.find((element) => {
-          if (element.movieId === review.movieId) {
-            return true;
+      const starData = await Star.findOne({ userRef: authData });
+
+      const result = await Promise.all(
+        reviewData.map((review) => {
+          let star = starData.starList.find((element) => {
+            if (element.movieId === review.movieId) {
+              return true;
+            }
+          });
+
+          /*
+          리뷰는 작성했지만 별점은 등록하지 않았을 때,
+          별점 기본값을 0으로 설정
+          */
+          if (!star) {
+            star = 0;
+          } else {
+            star = star.star;
           }
-        });
 
-        /*
-        리뷰는 작성했지만 별점은 등록하지 않았을 때,
-        별점 기본값을 0으로 설정
-        */
-        if (!star) {
-          star = 0;
-        } else {
-          star = star.star;
-        }
+          /*
+           * 프론트 요청
+           * 유저별 리뷰 조회 시 유저의 좋아요 유/무 판별을 위해
+           * 각 리뷰 데이터에 좋아요 누른 유저를 배열로 추가
+           */
+          const likeUsers = review.likeRef.likeUsers;
+          let userList = [];
 
-        /*
-         * 프론트 요청
-         * 유저별 리뷰 조회 시 유저의 좋아요 유/무 판별을 위해
-         * 각 리뷰 데이터에 좋아요 누른 유저를 배열로 추가
-         */
-        const likeUsers = review.likeRef.likeUsers;
-        let userList = [];
+          likeUsers.map((user) => {
+            userList.push(user.user);
+          });
 
-        likeUsers.map((user) => {
-          userList.push(user.user);
-        });
+          let likeCount = review.likeRef.likeCount;
 
-        let likeCount = review.likeRef.likeCount;
+          if (likeCount >= 1) {
+            likeCount = review.likeRef.likeCount;
+          } else {
+            likeCount = 0;
+          }
 
-        if (likeCount >= 1) {
-          likeCount = review.likeRef.likeCount;
-        } else {
-          likeCount = 0;
-        }
+          const data = {
+            movieId: review.movieId,
+            reviewId: review.reviewId,
+            shortId: review.userRef.shortId, // 프론트 요청으로 추가
+            author: review.userRef.name,
+            profileImg: review.userRef.profileImg,
+            title: review.title,
+            content: review.content,
+            star: star,
+            createdAt: moment(review.createdAt).fromNow(),
+            updatedAt: moment(review.updatedAt).fromNow(),
+            likeUsers: userList,
+            likeCount: likeCount,
+          };
+          return data;
+        }),
+      );
 
-        const data = {
-          movieId: review.movieId,
-          reviewId: review.reviewId,
-          shortId: review.userRef.shortId, // 프론트 요청으로 추가
-          author: review.userRef.name,
-          profileImg: review.userRef.profileImg,
-          title: review.title,
-          content: review.content,
-          star: star,
-          createdAt: moment(review.createdAt).fromNow(),
-          updatedAt: moment(review.updatedAt).fromNow(),
-          likeUsers: userList,
-          likeCount: likeCount,
-        };
-        return data;
-      }),
-    );
-
-    if (result) {
-      res.json(result);
+      if (result) {
+        res.json(result);
+      }
+      return;
     }
-    return;
   }),
 );
 
@@ -203,6 +208,13 @@ router.post(
       });
       */
 
+      const reviewData = await Review.findOne({
+        $and: [{ userRef: authData }, { movieId }],
+      });
+
+      if (reviewData)
+        return res.json({ result: "이미 작성한 리뷰가 존재합니다." });
+
       await Review.create({
         userRef: authData,
         movieId: movieId,
@@ -211,6 +223,7 @@ router.post(
         starRef: starData,
       });
 
+      // ! TEST 중
       // res.json({
       //   result: "리뷰가 작성되었습니다.",
       // });
@@ -241,15 +254,27 @@ router.post(
 
       // 리뷰 Collection에서 "reviewId"를 기준으로 검색
       // 검색된 리뷰 Document에 좋아요 Document를 새로 추가
+
+      /*
+       * 리뷰 조회 후 성공 시 response 응답
+       */
       await Review.findOneAndUpdate(
         { reviewId: reviewId },
         { $set: { likeRef: likeData } },
-      ).then(
-        res.json({
-          result: "리뷰가 작성되었습니다.",
-        }),
-      );
+      ).then(res.json({ result: "리뷰가 작성되었습니다." }));
     }
+
+    // let tmp = (msg) =>
+    //   new Promise((resolve) => {
+    //     setTimeout(() => {
+    //       console.log(msg);
+    //       resolve("tmp");
+    //       res.json({
+    //         result: "리뷰가 작성되었습니다.",
+    //       });
+    //     });
+    //   }, 5000);
+    // tmp(1);
   }),
 );
 
@@ -347,7 +372,7 @@ router.get(
     console.log(starData);
 
     let star = starData.starList[0].star;
-    console.log(star);
+    console.log(별);
 
     /*
     리뷰는 작성했지만 별점은 등록하지 않았을 때,
@@ -390,6 +415,7 @@ router.get(
 * Delete.
 리뷰 삭제
 
+! FIXME: 리뷰 삭제 시 좋아요도 삭제
 // ! HotFix : 리뷰 삭제 시 평점도 삭제
 */
 router.post(
@@ -409,7 +435,11 @@ router.post(
 
     const reviewData = await Review.findOne({
       $and: [{ userRef: authData }, { movieId }],
-    }).populate("starRef");
+    })
+      .populate("starRef")
+      .populate("likeRef");
+
+    console.log(reviewData);
 
     if (!reviewData) {
       res.status(404);
@@ -427,10 +457,15 @@ router.post(
     await Star.updateOne(
       { userRef: authData },
       { $pull: { starList: { movieId: movieId } } },
-    ).then(() => {
-      res.json({
-        result: "리뷰가 삭제되었습니다.",
-      });
+    );
+
+    // 좋아요 삭제
+    await Like.deleteOne({
+      reviewRef: reviewData,
+    });
+
+    res.json({
+      result: "리뷰가 삭제되었습니다.",
     });
   }),
 );
