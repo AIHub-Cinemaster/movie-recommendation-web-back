@@ -66,6 +66,18 @@ router.get(
           star = star.star;
         }
 
+        /*
+         * 프론트 요청
+         * 유저별 리뷰 조회 시 유저의 좋아요 유/무 판별을 위해
+         * 각 리뷰 데이터에 좋아요 누른 유저를 배열로 추가
+         */
+        const likeUsers = review.likeRef.likeUsers;
+        let userList = [];
+
+        likeUsers.map((user) => {
+          userList.push(user.user);
+        });
+
         let likeCount = review.likeRef.likeCount;
 
         if (likeCount >= 1) {
@@ -85,6 +97,7 @@ router.get(
           star: star,
           createdAt: moment(review.createdAt).fromNow(),
           updatedAt: moment(review.updatedAt).fromNow(),
+          likeUsers: userList,
           likeCount: likeCount,
         };
         return data;
