@@ -9,6 +9,7 @@ const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
 const reviewListRouter = require("./routes/reviewList");
 const evaluationRouter = require("./routes/evaluation");
+const fs = require("fs");
 /*
 TODO : 후순위 구현
 const recommendRouter = require("./routes/recommend");
@@ -20,10 +21,20 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
+
+try {
+  fs.readdirSync("uploads");
+} catch (error) {
+  console.error("uploads 폴더가 없어 uploads 폴더를 생성합니다.");
+  fs.mkdirSync("uploads");
+}
 app.use("/uploads", express.static("uploads")); // 이미지 경로 접근 허용하도록
 
 //DB 연결
-mongoose.connect("mongodb://localhost:27017/Cinemaster");
+// mongoose.connect("mongodb://localhost:27017/Cinemaster");
+mongoose.connect(
+  "mongodb+srv://jisu:4232@cinemaster.edkazqq.mongodb.net/?retryWrites=true&w=majority",
+);
 
 mongoose.connection.on("connected", () => {
   console.log("DB connect success");
