@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { User } = require("../models");
 const { Review } = require("../models");
-const { Like } = require("../models");
+// const { Like } = require("../models");
 const asyncHandler = require("../utils/async-handler");
 
 const router = Router();
@@ -36,7 +36,70 @@ router.post(
     }
 
     const reviewData = await Review.findOne({ reviewId: reviewId });
+    console.log(reviewData);
 
+    const likeData = await Review.findOne({
+      $and: [{ reviewId: reviewId }, { "likeUsers.user": shortId }],
+    });
+
+    console.log("------------------------------------");
+    console.log(likeData);
+    console.log("------------------------------------");
+
+    if (!likeData) {
+      await Review.findOneAndUpdate(
+        { reviewId: reviewId },
+        { $push: { likeUsers: { user: shortId, like: true } } },
+      );
+
+      const newLikeData = await Review.findOne({ reviewId: reviewId });
+
+      const likeUsers = newLikeData.likeUsers;
+
+      await Review.findOneAndUpdate(
+        {
+          reviewId: reviewId,
+        },
+        { likeCount: likeUsers.length },
+      );
+
+      const result = {
+        shortId: shortId,
+        reviewId: reviewId,
+        like: true,
+        likeCount: likeUsers.length,
+      };
+
+      res.json(result);
+    } else {
+      await Review.findOneAndUpdate(
+        { reviewId: reviewId },
+        { $pull: { likeUsers: { user: shortId } } },
+      );
+
+      const newLikeData = await Review.findOne({ reviewId: reviewId });
+
+      const likeUsers = newLikeData.likeUsers;
+
+      await Review.findOneAndUpdate(
+        {
+          reviewId: reviewId,
+        },
+        { likeCount: likeUsers.length },
+      );
+
+      const result = {
+        shortId: shortId,
+        reviewId: reviewId,
+        like: false,
+        likeCount: likeUsers.length,
+      };
+
+      res.json(result);
+    }
+
+    /*
+    ! 좋아요 설계 변경 중 (아래는 원본 코드)
     const likeData = await Like.findOne({
       $and: [{ reviewRef: reviewData }, { "likeUsers.user": shortId }],
     });
@@ -92,6 +155,7 @@ router.post(
 
       res.json(result);
     }
+    */
   }),
 );
 

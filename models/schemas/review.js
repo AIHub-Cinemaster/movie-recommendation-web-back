@@ -24,10 +24,15 @@ module.exports = new Schema(
       type: String,
       required: true,
     },
-    likeRef: {
-      type: Schema.Types.ObjectId,
-      ref: "Like",
+    likeCount: {
+      default: 0,
     },
+    likeUsers: [
+      {
+        user: String,
+        like: Boolean,
+      },
+    ],
     starRef: {
       type: Schema.Types.ObjectId,
       required: true,
