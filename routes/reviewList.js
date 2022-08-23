@@ -38,15 +38,15 @@ router.get(
      * 프론트 요청
      * 리뷰 조회 시 리뷰 유/무 유효성 검사 에러 처리 삭제
      */
-    if (reviewData.length === 0) {
-      // 에러 코드 삭제
-      // res.status(404);
-      res.json({
-        message: "작성된 리뷰가 존재하지 않습니다.",
-        result: [],
-      });
-      return;
-    }
+    // if (reviewData.length === 0) {
+    //   // 에러 코드 삭제
+    //   // res.status(404);
+    //   res.json({
+    //     message: "작성된 리뷰가 존재하지 않습니다.",
+    //     result: [],
+    //   });
+    //   return;
+    // }
 
     const result = await Promise.all(
       reviewData.map((review) => {

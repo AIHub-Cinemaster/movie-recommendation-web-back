@@ -36,15 +36,15 @@ router.get(
      * 프론트 요청
      * 리뷰 조회 시 리뷰 유/무 유효성 검사 에러 처리 삭제
      */
-    if (reviewData.length === 0) {
-      // 에러 코드 삭제
-      // res.status(404);
-      res.json({
-        message: "작성한 리뷰가 존재하지 않습니다.",
-        result: [],
-      });
-      return;
-    }
+    // if (reviewData.length === 0) {
+    //   // 에러 코드 삭제
+    //   // res.status(404);
+    //   res.json({
+    //     message: "작성한 리뷰가 존재하지 않습니다.",
+    //     result: [],
+    //   });
+    //   return;
+    // }
 
     const starData = await Star.findOne({ userRef: authData });
 
@@ -289,6 +289,8 @@ router.post(
 * Update.
 리뷰 수정
 
+? 리뷰 수정 시간 따로 만들어야 할 듯
+? (좋아요 누를 시 수정 시간 변경됨)
 완료 TODO : 리뷰 수정 시 기존 내용 보이게
 */
 router.post(
