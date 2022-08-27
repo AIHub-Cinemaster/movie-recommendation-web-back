@@ -149,7 +149,7 @@ router.get(
 router.post(
   "/add",
   asyncHandler(async (req, res) => {
-    const { movieId, shortId, title, content, star } = req.body;
+    const { movieId, shortId, title, content, star, genreList } = req.body;
 
     const authData = await User.findOne({ shortId });
 
@@ -174,6 +174,7 @@ router.post(
           {
             movieId,
             star,
+            genreList,
           },
         ],
       });
@@ -201,6 +202,7 @@ router.post(
           {
             movieId,
             star,
+            genreList,
           },
         ];
 
