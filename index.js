@@ -1,5 +1,9 @@
+// library
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
+
+// Router
 const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
 const starRouter = require("./routes/star");
@@ -8,9 +12,9 @@ const kakaoRouter = require("./routes/oauth/kakao");
 const naverRouter = require("./routes/oauth/naver");
 const reviewRouter = require("./routes/review");
 const reviewListRouter = require("./routes/reviewList");
-const path = require("path");
 const likeRouter = require("./routes/like");
 const evaluationRouter = require("./routes/evaluation");
+const reportRouter = require("./routes/report");
 
 const fs = require("fs");
 
@@ -79,6 +83,8 @@ app.use("/recommend", recommendRouter);
 app.use("/eval", evaluationRouter);
 
 app.use("/upload", fileUploadRouter);
+
+app.use("/report", reportRouter);
 
 // //api/index.js
 // app.use(express.static(path.join(__dirname, "/client/build")));

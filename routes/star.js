@@ -5,7 +5,7 @@ const asyncHandler = require("../utils/async-handler");
 
 const router = Router();
 
-// // 별점 평균 가져오기
+// 별점 평균 가져오기
 router.get(
   "/average/:movieId",
   asyncHandler(async (req, res) => {
@@ -81,7 +81,6 @@ router.post(
     console.log("authData", authData);
     // Create. 별점 자체를 최초 등록
     const checkStar = await Star.findOne({ userRef: authData }); //없으면 null
-    console.log("checkStar", checkStar);
     if (!checkStar) {
       await Star.create({
         userRef: authData,

@@ -13,6 +13,7 @@ module.exports = new Schema(
       {
         movieId: String,
         star: Number,
+        genreList: [String],
       },
     ],
   },
