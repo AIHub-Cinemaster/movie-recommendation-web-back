@@ -141,18 +141,19 @@ router.get(
      * '장르2': {별점의 횟수 : 25, 별점의 평균 : 20},
      * }
      */
-    var preferDict = {};
+    var preferList = [];
     Object.keys(starDict).map((key) => {
-      preferDict[key] = {
+      preferList.push({
+        name: key,
         cnt: starDict[key].cnt,
         aver: Math.round((starDict[key].starSum / starDict[key].cnt) * 20),
-      };
+      });
     });
 
-    console.log(preferDict);
+    console.log(preferList);
     res.json({
       success: true,
-      result: preferDict,
+      result: preferList,
       msg: "선호도 및 장르 조회에 성공 했습니다.",
     });
   }),
