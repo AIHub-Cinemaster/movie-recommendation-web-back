@@ -35,7 +35,19 @@ router.get(
 
     var starCnt = starList.length;
     var starSum = 0;
-    var starDict = {};
+    var starDict = {
+      0: 0,
+      0.5: 0,
+      1: 0,
+      1.5: 0,
+      2: 0,
+      2.5: 0,
+      3: 0,
+      3.5: 0,
+      4: 0,
+      4.5: 0,
+      5: 0,
+    };
 
     starList.map((item) => {
       starSum += item.star;
@@ -56,12 +68,14 @@ router.get(
       }
     }
 
-    console.log("max", maxKey, max);
+    console.log("starDict", starDict);
+    console.log("starSum", starSum);
+    console.log("maxKey", maxKey);
 
     res.json({
       success: true,
       result: {
-        cnt: Number(starCnt),
+        cnt: starDict,
         aver: Number(Math.round((starSum / starCnt) * 100) / 100),
         sum: Number(starSum),
         feq: Number(maxKey),
