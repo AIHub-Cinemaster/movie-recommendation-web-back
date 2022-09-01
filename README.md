@@ -1,7 +1,13 @@
 # 영화 추천 커뮤니티 웹사이트 - 백엔드 
 
+## :grin: 01. 중요 모듈
+|모듈|버전|
+|------|---|
+|ExpressJs|![Generic badge](https://img.shields.io/badge/version-4.18.1-green.svg)|
+|mongodb|![Generic badge](https://img.shields.io/badge/version-4.8.1-red.svg)|
+|mongoose|![Generic badge](https://img.shields.io/badge/version-6.4.5-blue.svg)|
 
-## :blush: 01. API 설계   
+## :blush: 02. API 설계   
 * Rule
     * Method tpye이 `get` 시, param 에 데이터 전송
     * `get` tpye에 data 넣고 싶을 시 param에 넣거나 post 로 변경하여 body에 넣고 전송
@@ -68,5 +74,5 @@
 |별점 분포도 조회|GET|/dist/:shortId|-|{</br>"recommendList": List(Object("movieId" : String,"star":Number))</br>}|
 |장르 선호도 조회|GET|/prefer/:shortId|-|{</br>"success": Boolean,</br>"result": Object(cnt:Number, aver:Number, sum:Number, feq:Number), </br>"msg": "별점 평균, 별점 개수, 최빈 별점 조회에 성공 했습니다."</br>}|
 
-## :smirk: 02. DB 설계
+## :smirk: 03. DB 설계
 ![image](https://user-images.githubusercontent.com/11794584/187949239-955da38b-dfd7-40cc-b007-19a28fd148c5.png)
