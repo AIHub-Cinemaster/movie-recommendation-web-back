@@ -51,18 +51,18 @@
 |------|---|---|---|---|
 |좋아요 생성 및 삭제|POST|/|{</br>“shortId”: String, </br>“reviewId”: String</br>}|{</br>“shortId”: String,</br>“reviewId”: String,</br>“like”: Boolean,</br>“likeCount”: Number</br>}|
 
-f. 평가하기 : /eval
+**f. 평가하기 : /eval**
 |기능|Type|End point|Req|Response|
 |------|---|---|---|---|
 |평가할 데이터 랜덤 조회|GET|/:movieCount|-|{</br>movieNum : Number, </br>"result": List(Number)</br>}|
 |평가한 데이터 입력|POST|/|{</br>"shortId" : String, </br>"movieId" : String, </br>”star” : Number</br>}|{</br>"data": List(Object("movieId":String, "star":Number, "_id":String), </br>”result” : "별점 목록에 없던 영화라 추가 되었습니다.”</br>}|
 
-g. 추천하기 : /recommendation
+**g. 추천하기 : /recommendation**
 |기능|Type|End point|Req|Response|
 |------|---|---|---|---|
 |추천 영화 목록 조회|GET|/:shortId|-|{</br>"recommendList": List(Object("movieId" : String,"star":Number))</br>}|
 
-h. 리포트 : /report
+**h. 리포트 : /report**
 |기능|Type|End point|Req|Response|
 |------|---|---|---|---|
 |별점 분포도 조회|GET|/dist/:shortId|-|{</br>"recommendList": List(Object("movieId" : String,"star":Number))</br>}|
