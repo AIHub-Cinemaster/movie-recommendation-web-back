@@ -25,9 +25,9 @@ b. 영화 북마크 : /cart
 c. 영화 평점 : /star
 |기능|Type|End point|Req|Response|
 |------|---|---|---|---|
-|별점 조회|GET|/list/:shortId|-|`{empty: Boolean, result: List(String)}`|
-|별점 등록 및 수정|POST|/add|`{shortId: String, movieId:String, star: Number,}`|` {data: List(Number), result: "별점 목록에 추가 되었습니다.",}`|
-|영화별 평균 별점|GET|/average/:movieId|-|`{movieId: String,result: Number}`|
+|별점 조회|GET|/list/:shortId|-|`{empty: Boolean, result: List(Object(movieId:String, star:Number, genreList: List(String)))}`|
+|별점 등록 및 수정|POST|/add|`{shortId: String, movieId:String, star: Number,}`|` {data: List(Object(movieId:String, star:Number, genreList: List(String))), result: "별점 목록에 추가 되었습니다.",}`|
+|영화별 평균 별점|GET|/average/:movieId|-|`{movieId: String, result: Number}`|
 
 d. 영화 리뷰
 d-1. 전체 리뷰 : /reviewlist
@@ -55,3 +55,14 @@ f. 평가하기 : /eval
 |------|---|---|---|---|
 |평가할 데이터 랜덤 조회|GET|/:movieCount|-|`{movieNum : Number, "result": List(Number)}`|
 |평가한 데이터 입력|POST|/|`{"shortId" : String, "movieId" : String, ”star” : Number}`|`{"data": List(Object("movieId":String, "star":Number, "_id":String), ”result” : "별점 목록에 없던 영화라 추가 되었습니다.”}`|
+
+g. 추천하기 : /recommendation
+|기능|Type|End point|Req|Response|
+|------|---|---|---|---|
+|추천 영화 목록 조회|GET|/:shortId|-|`{"recommendList": List(Object("movieId" : String,"star":Number))`|
+
+h. 리포트 : /report
+|기능|Type|End point|Req|Response|
+|------|---|---|---|---|
+|별점 분포도 조회|GET|/dist/:shortId|-|`{"recommendList": List(Object("movieId" : String,"star":Number))`|
+|장르 선호도 조회|GET|/prefer/:shortId|-|`{"success": Boolean,"result": Object(cnt:Number, aver:Number, sum:Number, feq:Number), "msg": "별점 평균, 별점 개수, 최빈 별점 조회에 성공 했습니다."}`|
