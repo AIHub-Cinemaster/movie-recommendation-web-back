@@ -69,3 +69,4 @@
 |장르 선호도 조회|GET|/prefer/:shortId|-|{</br>"success": Boolean,</br>"result": Object(cnt:Number, aver:Number, sum:Number, feq:Number), </br>"msg": "별점 평균, 별점 개수, 최빈 별점 조회에 성공 했습니다."</br>}|
 
 ## :smirk: 02. DB 설계
+![image](https://user-images.githubusercontent.com/11794584/187949239-955da38b-dfd7-40cc-b007-19a28fd148c5.png)
