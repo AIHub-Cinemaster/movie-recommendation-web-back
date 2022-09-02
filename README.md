@@ -76,3 +76,7 @@
 
 ## :smirk: 03. DB 설계
 ![image](https://user-images.githubusercontent.com/11794584/187949239-955da38b-dfd7-40cc-b007-19a28fd148c5.png)
+
+![image](https://user-images.githubusercontent.com/11794584/188101783-c57cfae6-4cb9-43d4-966b-4f77d3181f6a.png)
+
+Cloud MongoDB 를 사용하여 동일한 데이터로 테스트하도록 세팅
